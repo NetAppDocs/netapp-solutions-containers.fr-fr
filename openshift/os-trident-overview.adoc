@@ -1,0 +1,428 @@
+---
+sidebar: sidebar 
+permalink: openshift/os-trident-overview.html 
+keywords: Trident, Trident, Helm, Operator, iSCSI, NFS 
+summary: Trident est un orchestrateur de stockage open source et entièrement pris en charge pour les conteneurs et les distributions Kubernetes, y compris Red Hat OpenShift. 
+---
+= Présentation de Trident
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Trident est un orchestrateur de stockage open source et entièrement pris en charge pour les conteneurs et les distributions Kubernetes, y compris Red Hat OpenShift.  Trident fonctionne avec l'ensemble du portefeuille de stockage NetApp , y compris les systèmes de stockage NetApp ONTAP et Element, et prend également en charge les connexions NFS et iSCSI.  Trident accélère le flux de travail DevOps en permettant aux utilisateurs finaux de provisionner et de gérer le stockage à partir de leurs systèmes de stockage NetApp sans nécessiter l'intervention d'un administrateur de stockage.
+
+Un administrateur peut configurer un certain nombre de backends de stockage en fonction des besoins du projet et des modèles de système de stockage qui permettent des fonctionnalités de stockage avancées, notamment la compression, des types de disques spécifiques ou des niveaux de qualité de service qui garantissent un certain niveau de performances.  Une fois définis, ces backends peuvent être utilisés par les développeurs dans leurs projets pour créer des revendications de volume persistant (PVC) et pour attacher un stockage persistant à leurs conteneurs à la demande.
+
+image:redhat-openshift-002.png["Figure montrant une boîte de dialogue d'entrée/sortie ou représentant un contenu écrit"]
+
+Trident a un cycle de développement rapide et, tout comme Kubernetes, est publié quatre fois par an.
+
+Une matrice de support indiquant quelle version de Trident a été testée avec quelle distribution Kubernetes peut être trouvée https://docs.netapp.com/us-en/trident/trident-get-started/requirements.html#supported-frontends-orchestrators["ici"] .
+
+Veuillez vous référer à lalink:https://docs.netapp.com/us-en/trident/index.html["Documentation du produit Trident"] pour les détails d'installation et de configuration.
+
+
+
+== Télécharger Trident
+
+Pour installer Trident sur le cluster utilisateur déployé et provisionner un volume persistant, procédez comme suit :
+
+. Téléchargez l'archive d'installation sur le poste de travail administrateur et extrayez le contenu.  La version actuelle de Trident peut être téléchargée https://github.com/NetApp/trident/releases?q=25.&expanded=true["ici"] .
+. Extrayez l’installation de Trident à partir du bundle téléchargé.
++
+[listing]
+----
+[netapp-user@rhel7 ~]$ tar -xzf trident-installer-22.01.0.tar.gz
+[netapp-user@rhel7 ~]$ cd trident-installer/
+[netapp-user@rhel7 trident-installer]$
+----
+
+
+
+
+== Installer l'opérateur Trident avec Helm
+
+. Définissez d'abord l'emplacement du cluster d'utilisateurs `kubeconfig` fichier comme variable d'environnement afin que vous n'ayez pas à y faire référence, car Trident n'a pas la possibilité de transmettre ce fichier.
++
+[listing]
+----
+[netapp-user@rhel7 trident-installer]$ export KUBECONFIG=~/ocp-install/auth/kubeconfig
+----
+. Exécutez la commande Helm pour installer l’opérateur Trident à partir de l’archive tar dans le répertoire helm tout en créant l’espace de noms trident dans votre cluster utilisateur.
++
+[listing]
+----
+[netapp-user@rhel7 trident-installer]$ helm install trident helm/trident-operator-22.01.0.tgz --create-namespace --namespace trident
+NAME: trident
+LAST DEPLOYED: Fri May  7 12:54:25 2021
+NAMESPACE: trident
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+Thank you for installing trident-operator, which will deploy and manage NetApp's Trident CSI
+storage provisioner for Kubernetes.
+
+Your release is named 'trident' and is installed into the 'trident' namespace.
+Please note that there must be only one instance of Trident (and trident-operator) in a Kubernetes cluster.
+
+To configure Trident to manage storage resources, you will need a copy of tridentctl, which is
+available in pre-packaged Trident releases.  You may find all Trident releases and source code
+online at https://github.com/NetApp/trident.
+
+To learn more about the release, try:
+
+  $ helm status trident
+  $ helm get all trident
+----
+. Vous pouvez vérifier que Trident est correctement installé en vérifiant les pods qui s'exécutent dans l'espace de noms ou en utilisant le binaire tridentctl pour vérifier la version installée.
++
+[listing]
+----
+[netapp-user@rhel7 trident-installer]$ oc get pods -n trident
+NAME                               READY   STATUS    RESTARTS   AGE
+trident-csi-5z45l                  1/2     Running   2          30s
+trident-csi-696b685cf8-htdb2       6/6     Running   0          30s
+trident-csi-b74p2                  2/2     Running   0          30s
+trident-csi-lrw4n                  2/2     Running   0          30s
+trident-operator-7c748d957-gr2gw   1/1     Running   0          36s
+
+[netapp-user@rhel7 trident-installer]$ ./tridentctl -n trident version
++----------------+----------------+
+| SERVER VERSION | CLIENT VERSION |
++----------------+----------------+
+| 22.01.0          | 22.01.0          |
++----------------+----------------+
+----
+
+
+
+NOTE: Dans certains cas, les environnements clients peuvent nécessiter la personnalisation du déploiement Trident .  Dans ces cas, il est également possible d'installer manuellement l'opérateur Trident et de mettre à jour les manifestes inclus pour personnaliser le déploiement.
+
+
+
+== Installer manuellement l'opérateur Trident
+
+. Tout d’abord, définissez l’emplacement du cluster d’utilisateurs `kubeconfig` fichier comme variable d'environnement afin que vous n'ayez pas à y faire référence, car Trident n'a pas la possibilité de transmettre ce fichier.
++
+[listing]
+----
+[netapp-user@rhel7 trident-installer]$ export KUBECONFIG=~/ocp-install/auth/kubeconfig
+----
+. Le `trident-installer` le répertoire contient des manifestes pour définir toutes les ressources requises.  En utilisant les manifestes appropriés, créez le `TridentOrchestrator` définition de ressource personnalisée.
++
+[listing]
+----
+[netapp-user@rhel7 trident-installer]$ oc create -f deploy/crds/trident.netapp.io_tridentorchestrators_crd_post1.16.yaml
+customresourcedefinition.apiextensions.k8s.io/tridentorchestrators.trident.netapp.io created
+----
+. S'il n'en existe pas, créez un espace de noms Trident dans votre cluster à l'aide du manifeste fourni.
++
+[listing]
+----
+[netapp-user@rhel7 trident-installer]$ oc apply -f deploy/namespace.yaml
+namespace/trident created
+----
+. Créez les ressources nécessaires au déploiement de l'opérateur Trident , comme un `ServiceAccount` pour l'opérateur, un `ClusterRole` et `ClusterRoleBinding` au `ServiceAccount` , un dédié `PodSecurityPolicy` , ou l'opérateur lui-même.
++
+[listing]
+----
+[netapp-user@rhel7 trident-installer]$ oc create -f deploy/bundle.yaml
+serviceaccount/trident-operator created
+clusterrole.rbac.authorization.k8s.io/trident-operator created
+clusterrolebinding.rbac.authorization.k8s.io/trident-operator created
+deployment.apps/trident-operator created
+podsecuritypolicy.policy/tridentoperatorpods created
+----
+. Vous pouvez vérifier l’état de l’opérateur après son déploiement avec les commandes suivantes :
++
+[listing]
+----
+[netapp-user@rhel7 trident-installer]$ oc get deployment -n trident
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+trident-operator   1/1     1            1           23s
+[netapp-user@rhel7 trident-installer]$ oc get pods -n trident
+NAME                                READY   STATUS    RESTARTS   AGE
+trident-operator-66f48895cc-lzczk   1/1     Running   0          41s
+----
+. Avec l'opérateur déployé, nous pouvons maintenant l'utiliser pour installer Trident.  Cela nécessite de créer un `TridentOrchestrator` .
++
+[listing]
+----
+[netapp-user@rhel7 trident-installer]$ oc create -f deploy/crds/tridentorchestrator_cr.yaml
+tridentorchestrator.trident.netapp.io/trident created
+[netapp-user@rhel7 trident-installer]$ oc describe torc trident
+Name:         trident
+Namespace:
+Labels:       <none>
+Annotations:  <none>
+API Version:  trident.netapp.io/v1
+Kind:         TridentOrchestrator
+Metadata:
+  Creation Timestamp:  2021-05-07T17:00:28Z
+  Generation:          1
+  Managed Fields:
+    API Version:  trident.netapp.io/v1
+    Fields Type:  FieldsV1
+    fieldsV1:
+      f:spec:
+        .:
+        f:debug:
+        f:namespace:
+    Manager:      kubectl-create
+    Operation:    Update
+    Time:         2021-05-07T17:00:28Z
+    API Version:  trident.netapp.io/v1
+    Fields Type:  FieldsV1
+    fieldsV1:
+      f:status:
+        .:
+        f:currentInstallationParams:
+          .:
+          f:IPv6:
+          f:autosupportHostname:
+          f:autosupportimage:
+          f:autosupportProxy:
+          f:autosupportSerialNumber:
+          f:debug:
+          f:enableNodePrep:
+          f:imagePullSecrets:
+          f:imageRegistry:
+          f:k8sTimeout:
+          f:kubeletDir:
+          f:logFormat:
+          f:silenceAutosupport:
+          f:tridentimage:
+        f:message:
+        f:namespace:
+        f:status:
+        f:version:
+    Manager:         trident-operator
+    Operation:       Update
+    Time:            2021-05-07T17:00:28Z
+  Resource Version:  931421
+  Self Link:         /apis/trident.netapp.io/v1/tridentorchestrators/trident
+  UID:               8a26a7a6-dde8-4d55-9b66-a7126754d81f
+Spec:
+  Debug:      true
+  Namespace:  trident
+Status:
+  Current Installation Params:
+    IPv6:                       false
+    Autosupport Hostname:
+    Autosupport image:          netapp/trident-autosupport:21.01
+    Autosupport Proxy:
+    Autosupport Serial Number:
+    Debug:                      true
+    Enable Node Prep:           false
+    Image Pull Secrets:
+    Image Registry:
+    k8sTimeout:           30
+    Kubelet Dir:          /var/lib/kubelet
+    Log Format:           text
+    Silence Autosupport:  false
+    Trident image:        netapp/trident:22.01.0
+  Message:                Trident installed
+  Namespace:              trident
+  Status:                 Installed
+  Version:                v22.01.0
+Events:
+  Type    Reason      Age   From                        Message
+  ----    ------      ----  ----                        -------
+  Normal  Installing  80s   trident-operator.netapp.io  Installing Trident
+  Normal  Installed   68s   trident-operator.netapp.io  Trident installed
+----
+. Vous pouvez vérifier que Trident est correctement installé en vérifiant les pods qui s'exécutent dans l'espace de noms ou en utilisant le binaire tridentctl pour vérifier la version installée.
++
+[listing]
+----
+[netapp-user@rhel7 trident-installer]$ oc get pods -n trident
+NAME                                READY   STATUS    RESTARTS   AGE
+trident-csi-bb64c6cb4-lmd6h         6/6     Running   0          82s
+trident-csi-gn59q                   2/2     Running   0          82s
+trident-csi-m4szj                   2/2     Running   0          82s
+trident-csi-sb9k9                   2/2     Running   0          82s
+trident-operator-66f48895cc-lzczk   1/1     Running   0          2m39s
+
+[netapp-user@rhel7 trident-installer]$ ./tridentctl -n trident version
++----------------+----------------+
+| SERVER VERSION | CLIENT VERSION |
++----------------+----------------+
+| 22.01.0          | 22.01.0          |
++----------------+----------------+
+----
+
+
+
+
+== Préparer les nœuds de travail pour le stockage
+
+
+
+=== NFS
+
+La plupart des distributions Kubernetes sont livrées avec les packages et utilitaires permettant de monter les backends NFS installés par défaut, y compris Red Hat OpenShift.
+
+Cependant, pour NFSv3, il n’existe aucun mécanisme permettant de négocier la concurrence entre le client et le serveur.  Par conséquent, le nombre maximal d'entrées de la table d'emplacements sunrpc côté client doit être synchronisé manuellement avec la valeur prise en charge sur le serveur pour garantir les meilleures performances pour la connexion NFS sans que le serveur n'ait à réduire la taille de la fenêtre de connexion.
+
+Pour ONTAP, le nombre maximal d'entrées de table d'emplacements sunrpc prises en charge est de 128, c'est-à-dire ONTAP peut traiter 128 requêtes NFS simultanées à la fois.  Cependant, par défaut, Red Hat CoreOS/Red Hat Enterprise Linux dispose d'un maximum de 65 536 entrées de table d'emplacements sunrpc par connexion.  Nous devons définir cette valeur sur 128 et cela peut être fait à l'aide de Machine Config Operator (MCO) dans OpenShift.
+
+Pour modifier le nombre maximal d'entrées de la table d'emplacements sunrpc dans les nœuds de travail OpenShift, procédez comme suit :
+
+. Connectez-vous à la console Web OCP et accédez à Calcul > Configurations de la machine.  Cliquez sur Créer une configuration de machine.  Copiez et collez le fichier YAML et cliquez sur Créer.
++
+[source, cli]
+----
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  name: 98-worker-nfs-rpc-slot-tables
+  labels:
+    machineconfiguration.openshift.io/role: worker
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+    storage:
+      files:
+        - contents:
+            source: data:text/plain;charset=utf-8;base64,b3B0aW9ucyBzdW5ycGMgdGNwX21heF9zbG90X3RhYmxlX2VudHJpZXM9MTI4Cg==
+          filesystem: root
+          mode: 420
+          path: /etc/modprobe.d/sunrpc.conf
+----
+. Une fois le MCO créé, la configuration doit être appliquée sur tous les nœuds de travail et redémarrée un par un.  L’ensemble du processus prend environ 20 à 30 minutes.  Vérifiez si la configuration de la machine est appliquée en utilisant `oc get mcp` et assurez-vous que le pool de configuration de la machine pour les travailleurs est mis à jour.
++
+[listing]
+----
+[netapp-user@rhel7 openshift-deploy]$ oc get mcp
+NAME     CONFIG                                    UPDATED   UPDATING   DEGRADED
+master   rendered-master-a520ae930e1d135e0dee7168   True      False      False
+worker   rendered-worker-de321b36eeba62df41feb7bc   True      False      False
+----
+
+
+
+
+=== iSCSI
+
+Pour préparer les nœuds de travail afin de permettre le mappage des volumes de stockage de blocs via le protocole iSCSI, vous devez installer les packages nécessaires pour prendre en charge cette fonctionnalité.
+
+Dans Red Hat OpenShift, cela est géré en appliquant un MCO (Machine Config Operator) à votre cluster après son déploiement.
+
+Pour configurer les nœuds de travail afin d’exécuter les services iSCSI, procédez comme suit :
+
+. Connectez-vous à la console Web OCP et accédez à Calcul > Configurations de la machine.  Cliquez sur Créer une configuration de machine.  Copiez et collez le fichier YAML et cliquez sur Créer.
++
+Lorsque vous n'utilisez pas le multipathing :
+
++
+[source, cli]
+----
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: worker
+  name: 99-worker-element-iscsi
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+    systemd:
+      units:
+        - name: iscsid.service
+          enabled: true
+          state: started
+  osImageURL: ""
+----
++
+Lors de l'utilisation du multipathing :
+
++
+[source, cli]
+----
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  name: 99-worker-ontap-iscsi
+  labels:
+    machineconfiguration.openshift.io/role: worker
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+    storage:
+      files:
+      - contents:
+          source: data:text/plain;charset=utf-8;base64,ZGVmYXVsdHMgewogICAgICAgIHVzZXJfZnJpZW5kbHlfbmFtZXMgbm8KICAgICAgICBmaW5kX211bHRpcGF0aHMgbm8KfQoKYmxhY2tsaXN0X2V4Y2VwdGlvbnMgewogICAgICAgIHByb3BlcnR5ICIoU0NTSV9JREVOVF98SURfV1dOKSIKfQoKYmxhY2tsaXN0IHsKfQoK
+          verification: {}
+        filesystem: root
+        mode: 400
+        path: /etc/multipath.conf
+    systemd:
+      units:
+        - name: iscsid.service
+          enabled: true
+          state: started
+        - name: multipathd.service
+          enabled: true
+          state: started
+  osImageURL: ""
+----
+. Une fois la configuration créée, il faut environ 20 à 30 minutes pour appliquer la configuration aux nœuds de travail et les recharger.  Vérifiez si la configuration de la machine est appliquée en utilisant `oc get mcp` et assurez-vous que le pool de configuration de la machine pour les travailleurs est mis à jour.  Vous pouvez également vous connecter aux nœuds de travail pour confirmer que le service iscsid est en cours d'exécution (et que le service multipathd est en cours d'exécution si vous utilisez le multipathing).
++
+[listing]
+----
+[netapp-user@rhel7 openshift-deploy]$ oc get mcp
+NAME     CONFIG                                    UPDATED   UPDATING   DEGRADED
+master   rendered-master-a520ae930e1d135e0dee7168   True      False      False
+worker   rendered-worker-de321b36eeba62df41feb7bc   True      False      False
+
+[netapp-user@rhel7 openshift-deploy]$ ssh core@10.61.181.22 sudo systemctl status iscsid
+● iscsid.service - Open-iSCSI
+   Loaded: loaded (/usr/lib/systemd/system/iscsid.service; enabled; vendor preset: disabled)
+   Active: active (running) since Tue 2021-05-26 13:36:22 UTC; 3 min ago
+     Docs: man:iscsid(8)
+           man:iscsiadm(8)
+ Main PID: 1242 (iscsid)
+   Status: "Ready to process requests"
+    Tasks: 1
+   Memory: 4.9M
+      CPU: 9ms
+   CGroup: /system.slice/iscsid.service
+           └─1242 /usr/sbin/iscsid -f
+
+[netapp-user@rhel7 openshift-deploy]$ ssh core@10.61.181.22 sudo systemctl status multipathd
+ ● multipathd.service - Device-Mapper Multipath Device Controller
+   Loaded: loaded (/usr/lib/systemd/system/multipathd.service; enabled; vendor preset: enabled)
+   Active: active (running) since Tue 2021-05-26 13:36:22 UTC; 3 min ago
+  Main PID: 918 (multipathd)
+    Status: "up"
+    Tasks: 7
+    Memory: 13.7M
+    CPU: 57ms
+    CGroup: /system.slice/multipathd.service
+            └─918 /sbin/multipathd -d -s
+----
++
+
+NOTE: Il est également possible de confirmer que MachineConfig a été appliqué avec succès et que les services ont été démarrés comme prévu en exécutant le `oc debug` commande avec les drapeaux appropriés.
+
+
+
+
+
+== Créer des backends de système de stockage
+
+Une fois l’installation de Trident Operator terminée, vous devez configurer le backend pour la plate-forme de stockage NetApp spécifique que vous utilisez.  Suivez les liens ci-dessous afin de continuer l'installation et la configuration de Trident.
+
+* link:os-trident-ontap-nfs.html["NetApp ONTAP NFS"]
+* link:os-trident-ontap-iscsi.html["NetApp ONTAP iSCSI"]
+* link:os-trident-element-iscsi.html["NetApp Element"]
+

@@ -1,0 +1,31 @@
+---
+sidebar: sidebar 
+permalink: openshift/os-multitenancy-overview.html 
+keywords: OpenShift, OCP, Trident, NetApp ONTAP, Red Hat OpenShift, Multitenancy, Multi-tenancy 
+summary: Configuration de la multilocation sur Red Hat OpenShift avec NetApp 
+---
+= Configuration de la multilocation sur Red Hat OpenShift avec NetApp
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+De nombreuses organisations qui exécutent plusieurs applications ou charges de travail sur des conteneurs ont tendance à déployer un cluster Red Hat OpenShift par application ou charge de travail.  Cela leur permet de mettre en œuvre une isolation stricte pour l’application ou la charge de travail, d’optimiser les performances et de réduire les vulnérabilités de sécurité.  Cependant, le déploiement d’un cluster Red Hat OpenShift distinct pour chaque application pose son propre ensemble de problèmes.  Cela augmente les frais opérationnels liés à la nécessité de surveiller et de gérer chaque cluster individuellement, augmente les coûts en raison des ressources dédiées à différentes applications et entrave l'évolutivité efficace.
+
+Pour surmonter ces problèmes, on peut envisager d’exécuter toutes les applications ou charges de travail dans un seul cluster Red Hat OpenShift.  Mais dans une telle architecture, l’isolement des ressources et les vulnérabilités de sécurité des applications constituent l’un des principaux défis.  Toute vulnérabilité de sécurité dans une charge de travail pourrait naturellement se propager à une autre charge de travail, augmentant ainsi la zone d’impact.  De plus, toute utilisation brutale et incontrôlée des ressources par une application peut affecter les performances d’une autre application, car il n’existe pas de politique d’allocation des ressources par défaut.
+
+Par conséquent, les organisations recherchent des solutions qui combinent le meilleur des deux mondes, par exemple en leur permettant d’exécuter toutes leurs charges de travail dans un seul cluster tout en offrant les avantages d’un cluster dédié pour chaque charge de travail.
+
+L’une de ces solutions efficaces consiste à configurer le multi-tenant sur Red Hat OpenShift.  La multilocation est une architecture qui permet à plusieurs locataires de coexister sur le même cluster avec une isolation appropriée des ressources, de la sécurité, etc.  Dans ce contexte, un locataire peut être considéré comme un sous-ensemble des ressources du cluster configurées pour être utilisées par un groupe particulier d'utilisateurs dans un but exclusif.  La configuration de la multilocation sur un cluster Red Hat OpenShift offre les avantages suivants :
+
+* Une réduction des CapEx et des OpEx en permettant le partage des ressources du cluster
+* Réduction des frais d'exploitation et de gestion
+* Sécuriser les charges de travail contre la contamination croisée des failles de sécurité
+* Protection des charges de travail contre une dégradation inattendue des performances due à une contention des ressources
+
+
+Pour un cluster OpenShift multilocataire entièrement réalisé, des quotas et des restrictions doivent être configurés pour les ressources du cluster appartenant à différents compartiments de ressources : calcul, stockage, réseau, sécurité, etc.  Bien que nous couvrions certains aspects de tous les compartiments de ressources de cette solution, nous nous concentrons sur les meilleures pratiques pour isoler et sécuriser les données servies ou consommées par plusieurs charges de travail sur le même cluster Red Hat OpenShift en configurant la multilocation sur les ressources de stockage qui sont allouées dynamiquement par Trident soutenu par NetApp ONTAP.

@@ -1,0 +1,39 @@
+---
+sidebar: sidebar 
+permalink: anthos/anthos-additional-information.html 
+keywords:  
+summary:  
+---
+= Où trouver des informations supplémentaires
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Pour en savoir plus sur les informations décrites dans ce document, consultez les sites Web suivants :
+
+* Documentation NetApp
++
+https://docs.netapp.com/["https://docs.netapp.com/"^]
+
+* Documentation de NetApp Trident
++
+https://docs.netapp.com/us-en/trident/index.html["https://docs.netapp.com/us-en/trident/index.html"]
+
+* Documentation sur Anthos Clusters sur VMware
++
+https://cloud.google.com/anthos/clusters/docs/on-prem/latest/overview["https://cloud.google.com/anthos/clusters/docs/on-prem/latest/overview"^]
+
+* Documentation d'Anthos sur bare metal
++
+https://cloud.google.com/anthos/clusters/docs/bare-metal/latest["https://cloud.google.com/anthos/clusters/docs/bare-metal/latest"]
+
+* Documentation VMware vSphere
++
+https://docs.vmware.com["https://docs.vmware.com/"^]
+
+

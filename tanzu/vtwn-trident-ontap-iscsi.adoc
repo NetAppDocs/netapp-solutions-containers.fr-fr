@@ -1,0 +1,128 @@
+---
+sidebar: sidebar 
+permalink: tanzu/vtwn-trident-ontap-iscsi.html 
+keywords: Trident, Trident, ONTAP, AFF, FAS, iSCSI, Tanzu, TKG, TKGS, TKGI 
+summary: Pour intégrer le système de stockage NetApp ONTAP aux clusters VMware Tanzu Kubernetes pour les volumes persistants via iSCSI, la première étape consiste à préparer les nœuds en se connectant à chaque nœud et en configurant les utilitaires ou packages iSCSI pour monter les volumes iSCSI. 
+---
+= Configuration iSCSI de NetApp ONTAP
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Pour intégrer le système de stockage NetApp ONTAP aux clusters VMware Tanzu Kubernetes pour les volumes persistants via iSCSI, la première étape consiste à préparer les nœuds en se connectant à chaque nœud et en configurant les utilitaires ou packages iSCSI pour monter les volumes iSCSI.  Pour ce faire, suivez la procédure décrite dans celink:https://docs.netapp.com/us-en/trident/trident-use/worker-node-prep.html#iscsi-volumes["lien"^] .
+
+
+NOTE: NetApp ne recommande pas cette procédure pour les déploiements NAT des clusters VMware Tanzu Kubernetes.
+
+
+NOTE: TKGI utilise les machines virtuelles Bosh comme nœuds pour les clusters Tanzu Kubernetes qui exécutent des images de configuration immuables, et toutes les modifications manuelles des packages iSCSI sur les machines virtuelles Bosh ne restent pas persistantes lors des redémarrages.  Par conséquent, NetApp recommande d’utiliser des volumes NFS pour le stockage persistant des clusters Tanzu Kubernetes déployés et exploités par TKGI.
+
+Une fois les nœuds de cluster préparés pour les volumes iSCSI, vous devez créer un backend qui permet la communication avec le système de stockage.  Nous avons configuré un backend de base dans cette solution, mais si vous recherchez des options plus personnalisées, visitez la documentationlink:https://docs.netapp.com/us-en/trident/trident-use/ontap-san.html["ici"^] .
+
+
+
+== Créer un SVM dans ONTAP
+
+Pour créer un SVM dans ONTAP, procédez comme suit :
+
+. Connectez-vous à ONTAP System Manager, accédez à Stockage > Machines virtuelles de stockage, puis cliquez sur Ajouter.
+. Saisissez un nom pour le SVM, activez le protocole iSCSI, puis fournissez des détails pour les LIF de données.
++
+image:vtwn-025.png["LIF de données iSCSI SVM"]
+
+. Saisissez les détails du compte d’administration SVM, puis cliquez sur Enregistrer.
++
+image:vtwn-026.png["Administration iSCSI SVM"]
+
+. Pour affecter les agrégats à la SVM, accédez à Stockage > Machines virtuelles de stockage, cliquez sur les points de suspension en regard de la SVM nouvellement créée, puis cliquez sur Modifier.  Cochez la case Limiter la création de volume aux niveaux locaux préférés et attachez-y les agrégats requis.
++
+image:vtwn-027.png["Répartition globale SVM"]
+
+
+
+
+
+== Créer des backends et des StorageClasses
+
+. Pour les systèmes NetApp ONTAP servant NFS, créez un fichier de configuration backend sur le jumphost avec le backendName, managementLIF, dataLIF, svm, le nom d'utilisateur, le mot de passe et d'autres détails.
++
+[listing]
+----
+{
+  "version": 1,
+  "storageDriverName": "ontap-san",
+  "backendName": "ontap-san+10.61.181.231",
+  "managementLIF": "172.21.224.201",
+  "dataLIF": "10.61.181.231",
+  "svm": "trident_svm_iscsi",
+  "username": "admin",
+  "password": "password"
+}
+----
+. Créez le backend Trident en exécutant la commande suivante.
++
+[listing]
+----
+[netapp-user@rhel7 trident-installer]$ ./tridentctl -n trident create backend -f backend-ontap-san.json
++------------------------+----------------+--------------------------------------+--------+---------+
+|          NAME          | STORAGE DRIVER |                 UUID                 | STATE  | VOLUMES |
++------------------------+----------------+--------------------------------------+--------+---------+
+| ontap-san+10.61.181.231 | ontap-san      | 6788533c-7fea-4a35-b797-fb9bb3322b91 | online |       0 |
++------------------------+----------------+--------------------------------------+--------+---------+
+----
+. Après avoir créé un backend, vous devez ensuite créer une classe de stockage.  L'exemple de définition de classe de stockage suivant met en évidence les champs obligatoires et de base.  Le paramètre `backendType` devrait refléter le pilote de stockage du backend Trident nouvellement créé.  Notez également la valeur du champ de nom, qui doit être référencée dans une étape ultérieure.
++
+[listing]
+----
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ontap-iscsi
+provisioner: csi.trident.netapp.io
+parameters:
+  backendType: "ontap-san"
+----
++
+
+NOTE: Il existe un champ facultatif appelé `fsType` qui est défini dans ce fichier.  Dans les backends iSCSI, cette valeur peut être définie sur un type de système de fichiers Linux spécifique (XFS, ext4, etc.) ou peut être supprimée pour permettre aux clusters Tanzu Kubernetes de décider quel système de fichiers utiliser.
+
+. Créez la classe de stockage en exécutant la commande kubectl.
++
+[listing]
+----
+[netapp-user@rhel7 trident-installer]$ kubectl create -f storage-class-iscsi.yaml
+storageclass.storage.k8s.io/ontap-iscsi created
+----
+. Une fois la classe de stockage créée, vous devez ensuite créer la première revendication de volume persistant (PVC).  Un exemple de définition du PVC est donné ci-dessous.  Assurez-vous que le `storageClassName` le champ correspond au nom de la classe de stockage qui vient d'être créée.  La définition du PVC peut être davantage personnalisée selon les besoins en fonction de la charge de travail à provisionner.
++
+[listing]
+----
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: basic
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ontap-iscsi
+----
+. Créez le PVC en exécutant la commande kubectl.  La création peut prendre un certain temps en fonction de la taille du volume de support en cours de création, vous pouvez donc observer le processus au fur et à mesure de son exécution.
++
+[listing]
+----
+[netapp-user@rhel7 trident-installer]$ kubectl create -f pvc-basic.yaml
+persistentvolumeclaim/basic created
+
+[netapp-user@rhel7 trident-installer]$ kubectl get pvc
+NAME    STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+basic   Bound    pvc-7ceac1ba-0189-43c7-8f98-094719f7956c   1Gi        RWO            ontap-iscsi      3s
+----
+

@@ -1,0 +1,155 @@
+---
+sidebar: sidebar 
+permalink: openshift/os-on-openstack.html 
+keywords: OpenShift, OpenStack, private cloud 
+summary: La plateforme Red Hat OpenStack offre une base intégrée pour créer, déployer et faire évoluer un cloud OpenStack privé sécurisé et fiable. 
+---
+= OpenShift sur la plateforme Red Hat OpenStack
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+La plateforme Red Hat OpenStack offre une base intégrée pour créer, déployer et faire évoluer un cloud OpenStack privé sécurisé et fiable.
+
+OSP est un cloud d'infrastructure en tant que service (IaaS) mis en œuvre par un ensemble de services de contrôle qui gèrent les ressources de calcul, de stockage et de réseau.  L'environnement est géré à l'aide d'une interface Web qui permet aux administrateurs et aux utilisateurs de contrôler, de provisionner et d'automatiser les ressources OpenStack.  De plus, l'infrastructure OpenStack est facilitée par une interface de ligne de commande étendue et une API permettant des capacités d'automatisation complètes pour les administrateurs et les utilisateurs finaux.
+
+Le projet OpenStack est un projet communautaire développé rapidement qui fournit des versions mises à jour tous les six mois.  Au départ, Red Hat OpenStack Platform a suivi le rythme de ce cycle de publication en publiant une nouvelle version avec chaque version en amont et en fournissant un support à long terme pour chaque troisième version.  Récemment, avec la sortie d'OSP 16.0 (basée sur OpenStack Train), Red Hat a choisi de ne pas suivre le rythme des numéros de version, mais a plutôt rétroporté de nouvelles fonctionnalités dans des sous-versions.  La version la plus récente est Red Hat OpenStack Platform 16.1, qui inclut des fonctionnalités avancées rétroportées des versions Ussuri et Victoria en amont.
+
+Pour plus d'informations sur OSP, consultez lelink:https://www.redhat.com/en/technologies/linux-platforms/openstack-platform["Site Web de la plateforme Red Hat OpenStack"^] .
+
+
+
+== Services OpenStack
+
+Les services de la plateforme OpenStack sont déployés sous forme de conteneurs, ce qui isole les services les uns des autres et permet des mises à niveau faciles.  La plateforme OpenStack utilise un ensemble de conteneurs construits et gérés avec Kolla.  Le déploiement des services est effectué en extrayant des images de conteneurs du portail personnalisé Red Hat.  Ces conteneurs de services sont gérés à l’aide de la commande Podman et sont déployés, configurés et maintenus avec Red Hat OpenStack Director.
+
+image:redhat-openshift-034.png["Figure montrant une boîte de dialogue d'entrée/sortie ou représentant un contenu écrit"]
+
+[cols="15%, 15%, 70%"]
+|===
+| Service | Nom du projet | Description 
+
+
+| Tableau de bord | Horizon | Tableau de bord basé sur un navigateur Web que vous utilisez pour gérer les services OpenStack. 
+
+
+| Identité | Keystone | Service centralisé pour l'authentification et l'autorisation des services OpenStack et pour la gestion des utilisateurs, des projets et des rôles. 
+
+
+| Réseau OpenStack | Neutron | Fournit la connectivité entre les interfaces des services OpenStack. 
+
+
+| Stockage en bloc | Cendre | Gère les volumes de stockage de blocs persistants pour les machines virtuelles (VM). 
+
+
+| Calculer | Nova | Gère et provisionne les machines virtuelles exécutées sur les nœuds de calcul. 
+
+
+| Image | Coup d'oeil | Service de registre utilisé pour stocker des ressources telles que des images de machine virtuelle et des instantanés de volume. 
+
+
+| Stockage d'objets | Rapide | Permet aux utilisateurs de stocker et de récupérer des fichiers et des données arbitraires. 
+
+
+| Télémétrie | Célomètre | Fournit des mesures de l’utilisation des ressources cloud. 
+
+
+| Orchestration | Chaleur | Moteur d'orchestration basé sur des modèles qui prend en charge la création automatique de piles de ressources. 
+|===
+
+
+== Conception de réseau
+
+La solution Red Hat OpenShift avec NetApp utilise deux commutateurs de données pour fournir une connectivité de données principale à 25 Gbit/s.  Il utilise également deux commutateurs de gestion supplémentaires qui fournissent une connectivité à 1 Gbit/s pour la gestion en bande des nœuds de stockage et la gestion hors bande pour la fonctionnalité IPMI.
+
+La fonctionnalité IPMI est requise par Red Hat OpenStack Director pour déployer Red Hat OpenStack Platform à l'aide du service de provisionnement bare-metal Ironic.
+
+
+
+=== Exigences VLAN
+
+Red Hat OpenShift avec NetApp est conçu pour séparer logiquement le trafic réseau à des fins différentes en utilisant des réseaux locaux virtuels (VLAN).  Cette configuration peut être mise à l’échelle pour répondre aux demandes des clients ou pour fournir une isolation supplémentaire pour des services réseau spécifiques.  Le tableau suivant répertorie les VLAN requis pour implémenter la solution lors de la validation de la solution chez NetApp.
+
+[cols="15%, 70%, 15%"]
+|===
+| VLAN | But | ID VLAN 
+
+
+| Réseau de gestion hors bande | Réseau utilisé pour la gestion des nœuds physiques et du service IPMI pour Ironic. | 16 
+
+
+| Infrastructure de stockage | Réseau utilisé pour les nœuds de contrôleur pour mapper les volumes directement afin de prendre en charge les services d'infrastructure comme Swift. | 201 
+
+
+| Cendres de stockage | Réseau utilisé pour mapper et attacher des volumes de blocs directement aux instances virtuelles déployées dans l'environnement. | 202 
+
+
+| API interne | Réseau utilisé pour la communication entre les services OpenStack à l'aide de la communication API, des messages RPC et de la communication de base de données. | 301 
+
+
+| Locataire | Neutron fournit à chaque locataire ses propres réseaux via le tunneling via VXLAN.  Le trafic réseau est isolé au sein de chaque réseau locataire.  Chaque réseau locataire possède un sous-réseau IP qui lui est associé, et les espaces de noms réseau signifient que plusieurs réseaux locataires peuvent utiliser la même plage d'adresses sans provoquer de conflits. | 302 
+
+
+| Gestion du stockage | OpenStack Object Storage (Swift) utilise ce réseau pour synchroniser les objets de données entre les nœuds de réplica participants.  Le service proxy agit comme interface intermédiaire entre les demandes des utilisateurs et la couche de stockage sous-jacente.  Le proxy reçoit les demandes entrantes et localise la réplique nécessaire pour récupérer les données demandées. | 303 
+
+
+| PXE | OpenStack Director fournit un démarrage PXE dans le cadre du service de provisionnement bare metal d'Ironic pour orchestrer l'installation d'OSP Overcloud. | 3484 
+
+
+| Externe | Réseau accessible au public qui héberge le tableau de bord OpenStack (Horizon) pour la gestion graphique et permet des appels d'API publics pour gérer les services OpenStack. | 3485 
+
+
+| Réseau de gestion en bande | Fournit l'accès aux fonctions d'administration système telles que l'accès SSH, le trafic DNS et le trafic Network Time Protocol (NTP).  Ce réseau agit également comme une passerelle pour les nœuds non contrôleurs. | 3486 
+|===
+
+
+=== Ressources de soutien à l'infrastructure réseau
+
+L'infrastructure suivante doit être en place avant le déploiement de la plateforme de conteneurs OpenShift :
+
+* Au moins un serveur DNS qui fournit une résolution complète du nom d'hôte.
+* Au moins trois serveurs NTP qui peuvent maintenir la synchronisation horaire des serveurs de la solution.
+* (Facultatif) Connectivité Internet sortante pour l'environnement OpenShift.
+
+
+
+
+== Bonnes pratiques pour les déploiements de production
+
+Cette section répertorie plusieurs bonnes pratiques qu’une organisation doit prendre en compte avant de déployer cette solution en production.
+
+
+
+=== Déployer OpenShift sur un cloud privé OSP avec au moins trois nœuds de calcul
+
+L'architecture vérifiée décrite dans ce document présente le déploiement matériel minimal adapté aux opérations HA en déployant trois nœuds de contrôleur OSP et deux nœuds de calcul OSP.  Cette architecture garantit une configuration tolérante aux pannes dans laquelle les deux nœuds de calcul peuvent lancer des instances virtuelles et les machines virtuelles déployées peuvent migrer entre les deux hyperviseurs.
+
+Étant donné que Red Hat OpenShift se déploie initialement avec trois nœuds maîtres, une configuration à deux nœuds peut entraîner l'occupation du même nœud par au moins deux maîtres, ce qui peut entraîner une éventuelle panne d'OpenShift si ce nœud spécifique devient indisponible.  Par conséquent, il s’agit d’une bonne pratique de Red Hat de déployer au moins trois nœuds de calcul OSP afin que les maîtres OpenShift puissent être répartis uniformément et que la solution reçoive un degré supplémentaire de tolérance aux pannes.
+
+
+
+=== Configurer l'affinité machine virtuelle/hôte
+
+La distribution des maîtres OpenShift sur plusieurs nœuds d'hyperviseur peut être réalisée en activant l'affinité VM/hôte.
+
+L'affinité est un moyen de définir des règles pour un ensemble de machines virtuelles et/ou d'hôtes qui déterminent si les machines virtuelles s'exécutent ensemble sur le même hôte ou sur des hôtes du groupe ou sur des hôtes différents.  Il est appliqué aux machines virtuelles en créant des groupes d'affinité constitués de machines virtuelles et/ou d'hôtes avec un ensemble de paramètres et de conditions identiques.  Selon que les machines virtuelles d'un groupe d'affinité s'exécutent sur le même hôte ou sur les mêmes hôtes du groupe ou séparément sur des hôtes différents, les paramètres du groupe d'affinité peuvent définir une affinité positive ou une affinité négative.  Dans la plateforme Red Hat OpenStack, les règles d'affinité et d'anti-affinité d'hôte peuvent être créées et appliquées en créant des groupes de serveurs et en configurant des filtres afin que les instances déployées par Nova dans un groupe de serveurs se déploient sur différents nœuds de calcul.
+
+Un groupe de serveurs dispose d'un maximum par défaut de 10 instances virtuelles dont il peut gérer le placement.  Cela peut être modifié en mettant à jour les quotas par défaut pour Nova.
+
+
+NOTE: Il existe une limite d'affinité/anti-affinité spécifique pour les groupes de serveurs OSP ; s'il n'y a pas suffisamment de ressources à déployer sur des nœuds séparés ou pas suffisamment de ressources pour permettre le partage de nœuds, la machine virtuelle ne parvient pas à démarrer.
+
+Pour configurer les groupes d'affinité, voirlink:https://access.redhat.com/solutions/1977943["Comment configurer Affinity et Anti-Affinity pour les instances OpenStack ?"^] .
+
+
+
+=== Utiliser un fichier d'installation personnalisé pour le déploiement d'OpenShift
+
+IPI facilite le déploiement des clusters OpenShift grâce à l'assistant interactif décrit précédemment dans ce document.  Cependant, il est possible que vous ayez besoin de modifier certaines valeurs par défaut dans le cadre d’un déploiement de cluster.
+
+Dans ces cas, vous pouvez exécuter l'assistant sans déployer immédiatement un cluster ; à la place, il crée un fichier de configuration à partir duquel le cluster peut être déployé ultérieurement.  Ceci est très utile si vous devez modifier des paramètres IPI par défaut ou si vous souhaitez déployer plusieurs clusters identiques dans votre environnement pour d'autres utilisations telles que le multi-hébergement.  Pour plus d'informations sur la création d'une configuration d'installation personnalisée pour OpenShift, consultezlink:https://docs.openshift.com/container-platform/4.7/installing/installing_openstack/installing-openstack-installer-custom.html["Red Hat OpenShift Installation d'un cluster sur OpenStack avec personnalisations"^] .

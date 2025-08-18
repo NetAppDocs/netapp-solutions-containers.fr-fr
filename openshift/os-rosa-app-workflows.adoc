@@ -1,0 +1,129 @@
+---
+sidebar: sidebar 
+permalink: openshift/os-rosa-app-workflows.html 
+keywords: OpenShift, OCP, Trident, NetApp ONTAP, Red Hat OpenShift Service on AWS, 
+summary: Service Red Hat OpenShift sur AWS avec NetApp ONTAP 
+---
+= Service Red Hat OpenShift sur AWS avec NetApp ONTAP
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Ce document décrit comment utiliser NetApp ONTAP avec le service Red Hat OpenShift sur AWS (ROSA).
+
+
+
+== Créer un instantané de volume
+
+**1.  Créer un instantané du volume de l'application** Dans cette section, nous montrerons comment créer un instantané trident du volume associé à l'application. Il s'agira d'une copie ponctuelle des données de l'application.  Si les données de l'application sont perdues, nous pouvons récupérer les données à partir de cette copie à ce moment-là.  REMARQUE : cet instantané est stocké dans le même agrégat que le volume d’origine dans ONTAP(sur site ou dans le cloud).  Ainsi, si l’agrégat de stockage ONTAP est perdu, nous ne pouvons pas récupérer les données de l’application à partir de son instantané.
+
+**un.  Créer un VolumeSnapshotClass Enregistrez le manifeste suivant dans un fichier appelé volume-snapshot-class.yaml
+
+[source]
+----
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotClass
+metadata:
+ name: fsx-snapclass
+driver: csi.trident.netapp.io
+deletionPolicy: Delete
+----
+Créez un instantané en utilisant le manifeste ci-dessus.
+
+image:redhat-openshift-container-rosa-020.png["classe d'instantanés"]
+
+**b.  Ensuite, créez un instantané** Créez un instantané du PVC existant en créant VolumeSnapshot pour prendre une copie ponctuelle de vos données Postgresql.  Cela crée un instantané FSx qui ne prend presque pas de place dans le backend du système de fichiers.  Enregistrez le manifeste suivant dans un fichier appelé volume-snapshot.yaml :
+
+[source]
+----
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+ name: postgresql-volume-snap-01
+spec:
+ volumeSnapshotClassName: fsx-snapclass
+ source:
+   persistentVolumeClaimName: data-postgresql-0
+----
+**c.  Créez l'instantané du volume et confirmez qu'il est créé**
+
+Supprimez la base de données pour simuler la perte de données (la perte de données peut survenir pour diverses raisons, ici nous la simulons simplement en supprimant la base de données)
+
+image:redhat-openshift-container-rosa-021.png["instantané du volume"]
+
+**d.  Supprimez la base de données pour simuler la perte de données (la perte de données peut survenir pour diverses raisons, ici nous la simulons simplement en supprimant la base de données)**
+
+image:redhat-openshift-container-rosa-022.png["connexion à la base de données"]
+
+image:redhat-openshift-container-rosa-023.png["supprimer la base de données"]
+
+
+
+== Restaurer à partir d'un instantané de volume
+
+**1.  Restaurer à partir d'un instantané** Dans cette section, nous montrerons comment restaurer une application à partir de l'instantané trident du volume de l'application.
+
+**un.  Créer un clone de volume à partir du snapshot**
+
+Pour restaurer le volume à son état précédent, vous devez créer un nouveau PVC basé sur les données de l'instantané que vous avez pris.  Pour ce faire, enregistrez le manifeste suivant dans un fichier nommé pvc-clone.yaml
+
+[source]
+----
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+ name: postgresql-volume-clone
+spec:
+ accessModes:
+   - ReadWriteOnce
+ storageClassName: trident-csi
+ resources:
+   requests:
+     storage: 8Gi
+ dataSource:
+   name: postgresql-volume-snap-01
+   kind: VolumeSnapshot
+   apiGroup: snapshot.storage.k8s.io
+----
+Créez un clone du volume en créant un PVC en utilisant l'instantané comme source à l'aide du manifeste ci-dessus.  Appliquez le manifeste et assurez-vous que le clone est créé.
+
+image:redhat-openshift-container-rosa-024.png["clone postgresql à partir d'un instantané"]
+
+**b.  Supprimer l'installation postgresql d'origine**
+
+image:redhat-openshift-container-rosa-025.png["suppression de l'application postgresql"]
+
+**c.  Créer une nouvelle application postgresql en utilisant le nouveau clone PVC**
+
+[source]
+----
+$ helm install postgresql bitnami/postgresql --set primary.persistence.enabled=true --set primary.persistence.existingClaim=postgresql-volume-clone -n postgresql
+----
+image:redhat-openshift-container-rosa-026.png["nouvelle installation de postgresql"]
+
+**d.  Vérifiez que le pod d'application est en cours d'exécution**
+
+image:redhat-openshift-container-rosa-027.png["nouvelle installation de postgresql"]
+
+**e.  Vérifiez que le pod utilise le clone comme PVC**
+
+image:redhat-openshift-container-rosa-028.png["description de la nouvelle installation de postgresql"]
+
+image:redhat-openshift-container-rosa-029.png["le nouveau pvc est le clone"]
+
+f) Pour valider que la base de données a été restaurée comme prévu, revenez à la console du conteneur et affichez les bases de données existantes
+
+image:redhat-openshift-container-rosa-030.png["base de données restaurée"]
+
+
+
+== Vidéo de démonstration
+
+.Amazon FSx for NetApp ONTAP avec Red Hat OpenShift Service sur AWS à l'aide du plan de contrôle hébergé
+video::213061d2-53e6-4762-a68f-b21401519023[panopto,width=360]
+D'autres vidéos sur Red Hat OpenShift et les solutions OpenShift sont disponibleslink:../videos/openshift-videos.html["ici"] .

@@ -1,0 +1,61 @@
+---
+sidebar: sidebar 
+permalink: blogs.html 
+summary: Lisez les blogs qui offrent des conseils pratiques et des bonnes pratiques pour l’intégration du stockage ONTAP aux solutions de virtualisation NetApp . 
+keywords: netapp, solutions, blogs 
+---
+= Lisez les blogs sur les solutions de conteneurs des experts NetApp
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Lisez les blogs qui offrent des conseils pratiques et des bonnes pratiques pour l’intégration du stockage ONTAP aux solutions de conteneurs NetApp .
+
+
+
+== Déploiement et intégration d'OpenShift
+
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Simplifying-Trident-Installation-on-Red-Hat-OpenShift-with-the-New-Certified/ba-p/459710["Simplification de l'installation de Trident sur Red Hat OpenShift avec le nouvel opérateur Trident certifié"]
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Unlock-Seamless-iSCSI-Storage-Integration-A-Guide-to-FSxN-on-ROSA-Clusters-for/ba-p/459124["Débloquez l'intégration transparente du stockage iSCSI : guide sur FSxN sur les clusters ROSA pour iSCSI"]
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Amazon-FSx-for-NetApp-ONTAP-with-Red-Hat-OpenShift-Service-on-AWS-ROSA-using/ba-p/456167["Amazon FSx for NetApp ONTAP avec Red Hat OpenShift Service sur AWS (ROSA) à l'aide d'un plan de contrôle hébergé"]
+* link:https://netapp.io/2021/05/21/docker-rate-limit-issue/["Installation de NetApp Trident sur Red Hat OpenShift – Comment résoudre le problème « toomanyrequests » de Docker !"]
+
+
+
+
+== Protection et sauvegarde des données
+
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Crash-Consistent-Backup-and-Restore-Operations-for-OpenShift-Virtualization-VMs/ba-p/459417["Opérations de sauvegarde et de restauration cohérentes en cas de panne pour les machines virtuelles de virtualisation OpenShift utilisant Trident 25.02"]
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/A-Backup-and-Restore-option-for-VM-data-protection-in-OpenShift-Virtualization/ba-p/452279["Une option de sauvegarde et de restauration pour la protection des données des machines virtuelles dans OpenShift Virtualization"]
+
+
+
+
+== Virtualisation et opérations de machines virtuelles
+
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Live-Migration-of-VMs-with-OpenShift-Virtualization-on-ROSA-and-Amazon-FSx-for/ba-p/456213["Migration en direct de machines virtuelles avec OpenShift Virtualization sur ROSA et Amazon FSx for NetApp ONTAP"]
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/ONTAP-for-OpenShift-Virtualization-VMs-non-disruptive-volume-move-operation-is/ba-p/451941["ONTAP pour les machines virtuelles de virtualisation OpenShift : vous pouvez conserver l'opération de déplacement de volume sans interruption"]
+
+
+
+
+== Intégration et performances du stockage
+
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Using-NVMe-TCP-to-consume-ONTAP-storage-for-your-modern-containerized-apps-on/ba-p/453706["Utilisation de NVMe/TCP pour consommer le stockage ONTAP pour vos applications conteneurisées modernes sur VMware"]
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/ONTAP-as-backend-storage-for-the-integrated-image-registry-in-OpenShift/ba-p/453142["ONTAP comme stockage backend pour le registre d'images intégré dans OpenShift Container Platform"]
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/NetApp-ONTAP-doubles-up-as-storage-for-logs-in-Red-Hat-OpenShift-Container/ba-p/449280["NetApp ONTAP sert également de stockage pour les journaux dans Red Hat OpenShift Container Platform"]
+
+
+
+
+== Écosystème Kubernetes et VMware
+
+* link:https://blog.netapp.com/accelerate-your-k8s-journey["Utiliser VMware Tanzu avec ONTAP pour accélérer votre parcours Kubernetes"]
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Kubernetes-on-vSphere-Part-1/ba-p/445634["Kubernetes sur vSphere (Partie 1)"]
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Kubernetes-on-vSphere-Part-2/ba-p/445848["Kubernetes sur vSphere (Partie 2)"]
+

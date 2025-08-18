@@ -1,0 +1,47 @@
+---
+section: anthos
+title: Anthos avec NetApp
+pdf-filename: Anthos avec NetApp
+entries:
+- title: Présentation de la solution
+  url: "/anthos/anthos-solution-overview.html"
+- title: En savoir plus sur Anthos
+  entries:
+  - title: Présentation d'Anthos
+    url: "/anthos/anthos-overview.html"
+  - title: Clusters Anthos sur VMware
+    url: "/anthos/anthos-vmw.html"
+  - title: Anthos sur métal nu
+    url: "/anthos/anthos-bm.html"
+- title: Systèmes de stockage NetApp
+  entries:
+  - title: Présentation des systèmes de stockage NetApp
+    url: "/anthos/anthos-netapp-overview.html"
+  - title: NetApp ONTAP
+    url: "/anthos/anthos-netapp-ontap.html"
+- title: Intégrations de stockage NetApp
+  entries:
+  - title: Présentation des intégrations de stockage NetApp
+    url: "/anthos/anthos-storint-overview.html"
+  - title: Présentation de NetApp Trident
+    url: "/anthos/anthos-trident-overview.html"
+- title: Options de configuration avancées
+  entries:
+  - title: À propos des options de configuration avancées
+    url: "/anthos/anthos-advanced-overview.html"
+  - title: Explorer les options d'équilibrage de charge
+    entries:
+    - title: À propos des options d'équilibrage de charge
+      url: "/anthos/anthos-load-balancers.html"
+    - title: Installer les équilibreurs de charge F5 BIG-IP
+      url: "/anthos/anthos-f5bigip-lb.html"
+    - title: Installer les équilibreurs de charge MetalLB
+      url: "/anthos/anthos-metallb.html"
+    - title: Installer les équilibreurs de charge SeeSaw
+      url: "/anthos/anthos-seesaw-lb.html"
+- title: Validation de la solution et cas d'utilisation
+  entries:
+  - title: Déployer une application sur le cluster Anthos
+    url: "/anthos/anthos-deploy-app-cloud-console.html"
+- title: Informations Complémentaires
+  url: "/anthos/anthos-additional-information.html"

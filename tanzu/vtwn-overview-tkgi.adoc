@@ -1,0 +1,32 @@
+---
+sidebar: sidebar 
+permalink: tanzu/vtwn-overview-tkgi.html 
+keywords: VMware Tanzu, Tanzu, Tanzu Kubernetes Grid Integrated, TKGI, DevOps, Netapp, Trident, Trident Protect 
+summary:  
+---
+= Présentation de VMware Tanzu Kubernetes Grid Integrated Edition (TKGI)
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+VMware Tanzu Kubernetes Grid Integrated (TKGI) Edition, anciennement connu sous le nom de VMware Enterprise PKS, est une plate-forme d'orchestration de conteneurs autonome basée sur Kubernetes avec des fonctionnalités telles que la gestion du cycle de vie, la surveillance de l'état des clusters, la mise en réseau avancée, un registre de conteneurs, etc.  TKGI provisionne et gère les clusters Kubernetes avec le plan de contrôle TKGI, qui se compose de BOSH et d'Ops Manager.
+
+TKGI peut être installé et exploité soit sur des environnements vSphere ou OpenStack sur site, soit dans l'un des principaux clouds publics sur leurs offres IaaS respectives.  De plus, l’intégration de TKGI avec NSX-T et Harbour permet des cas d’utilisation plus larges pour les charges de travail d’entreprise.  Pour en savoir plus sur TKGI et ses fonctionnalités, visitez la documentationlink:https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid-Integrated-Edition/index.html["ici"^] .
+
+image:vtwn-004.png["Édition intégrée de VMware Tanzu Kubernetes Grid"]
+
+TKGI est installé dans une variété de configurations sur une variété de plates-formes basées sur différents cas d'utilisation et conceptions.  Suivez le guidelink:https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid-Integrated-Edition/1.14/tkgi/GUID-index.html["ici"^] pour installer et configurer TKGI et ses prérequis.  TKGI utilise les machines virtuelles Bosh comme nœuds pour les clusters Tanzu Kubernetes qui exécutent des images de configuration immuables et toutes les modifications manuelles sur les machines virtuelles Bosh ne restent pas persistantes lors des redémarrages.
+
+Remarques importantes :
+
+* NetApp Trident nécessite un accès privilégié aux conteneurs.  Ainsi, lors de l’installation de TKGI, assurez-vous de sélectionner la case à cocher Activer les conteneurs privilégiés à l’étape de configuration des plans de nœuds de cluster Tanzu Kubernetes.
++
+image:vtwn-005.png["Conteneurs privilégiés dans TKGI"]
+
+* NetApp recommande que tous les environnements de production soient déployés dans plusieurs déploiements principaux pour la tolérance aux pannes avec le choix de la configuration des nœuds de travail pour répondre aux exigences des charges de travail prévues.  Ainsi, un plan de cluster TKGI recommandé serait composé d'au moins trois maîtres et trois travailleurs avec au moins quatre vCPU et 12 Go de RAM pour une charge de travail très intensive.
+

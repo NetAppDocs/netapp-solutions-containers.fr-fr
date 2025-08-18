@@ -1,0 +1,47 @@
+---
+sidebar: sidebar 
+permalink: tanzu/vtwn-additional-information.html 
+keywords:  
+summary:  
+---
+= Informations complémentaires : VMware Tanzu avec NetApp
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Pour en savoir plus sur les informations décrites dans ce document, consultez les sites Web suivants :
+
+* Documentation NetApp
++
+https://docs.netapp.com/["https://docs.netapp.com/"^]
+
+* Documentation Trident
++
+https://docs.netapp.com/us-en/trident/["https://docs.netapp.com/us-en/trident/"^]
+
+* Documentation Ansible
++
+https://docs.ansible.com/["https://docs.ansible.com/"^]
+
+* Documentation de VMware Tanzu
++
+https://docs.vmware.com/en/VMware-Tanzu/index.html["https://docs.vmware.com/en/VMware-Tanzu/index.html"^]
+
+* Documentation de la grille VMware Tanzu Kubernetes
++
+https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.5/vmware-tanzu-kubernetes-grid-15/GUID-index.html["https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.5/vmware-tanzu-kubernetes-grid-15/GUID-index.html"^]
+
+* Documentation du service VMware Tanzu Kubernetes Grid
++
+https://docs.vmware.com/en/VMware-vSphere/7.0/vmware-vsphere-with-tanzu/GUID-152BE7D2-E227-4DAA-B527-557B564D9718.html["https://docs.vmware.com/en/VMware-vSphere/7.0/vmware-vsphere-with-tanzu/GUID-152BE7D2-E227-4DAA-B527-557B564D9718.html"^]
+
+* Documentation de l'édition intégrée de VMware Tanzu Kubernetes Grid
++
+https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid-Integrated-Edition/index.html["https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid-Integrated-Edition/index.html"^]
+
+

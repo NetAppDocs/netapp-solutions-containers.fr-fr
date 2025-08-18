@@ -1,0 +1,261 @@
+---
+sidebar: sidebar 
+permalink: openshift/os-private-registry.html 
+keywords: Advanced Configuration, Private Registry, Trident, OpenShift Registry, NetApp Trident Protect Registry 
+summary: 'Cette section est dédiée à la création et à la configuration d"un registre d"images privé soutenu par un stockage persistant fourni par Trident.' 
+---
+= Création de registres d'images privés
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Pour la plupart des déploiements de Red Hat OpenShift, l'utilisation d'un registre public comme https://quay.io["Quay.io"] ou https://hub.docker.com["DockerHub"] répond à la plupart des besoins des clients.  Cependant, il arrive parfois qu'un client souhaite héberger ses propres images privées ou personnalisées.
+
+Cette procédure documente la création d'un registre d'images privé soutenu par un volume persistant fourni par Trident et NetApp ONTAP.
+
+
+NOTE: Trident Protect nécessite un registre pour héberger les images requises par les conteneurs Astra .  La section suivante décrit les étapes de configuration d'un registre privé sur un cluster Red Hat OpenShift et de transmission des images requises pour prendre en charge l'installation de Trident Protect.
+
+
+
+== Création d'un registre d'images privé
+
+. Supprimez l’annotation par défaut de la classe de stockage par défaut actuelle et annotez la classe de stockage basée sur Trident comme valeur par défaut pour le cluster OpenShift.
++
+[listing]
+----
+[netapp-user@rhel7 ~]$ oc patch storageclass thin -p '{"metadata": {"annotations": {"storageclass.kubernetes.io/is-default-class": "false"}}}'
+storageclass.storage.k8s.io/thin patched
+
+[netapp-user@rhel7 ~]$ oc patch storageclass ocp-trident -p '{"metadata": {"annotations": {"storageclass.kubernetes.io/is-default-class": "true"}}}'
+storageclass.storage.k8s.io/ocp-trident patched
+----
+. Modifiez l'opérateur imageregistry en saisissant les paramètres de stockage suivants dans le `spec` section.
++
+[listing]
+----
+[netapp-user@rhel7 ~]$ oc edit configs.imageregistry.operator.openshift.io
+
+storage:
+  pvc:
+    claim:
+----
+. Entrez les paramètres suivants dans le `spec` section pour créer une route OpenShift avec un nom d'hôte personnalisé.  Enregistrer et quitter.
++
+[listing]
+----
+routes:
+  - hostname: astra-registry.apps.ocp-vmw.cie.netapp.com
+    name: netapp-astra-route
+----
++
+
+NOTE: La configuration d'itinéraire ci-dessus est utilisée lorsque vous souhaitez un nom d'hôte personnalisé pour votre itinéraire.  Si vous souhaitez qu'OpenShift crée une route avec un nom d'hôte par défaut, vous pouvez ajouter les paramètres suivants au `spec` section: `defaultRoute: true` .
+
++
+.Certificats TLS personnalisés
+****
+Lorsque vous utilisez un nom d’hôte personnalisé pour l’itinéraire, par défaut, il utilise la configuration TLS par défaut de l’opérateur OpenShift Ingress.  Cependant, vous pouvez ajouter une configuration TLS personnalisée à l’itinéraire.  Pour ce faire, procédez comme suit.
+
+.. Créez un secret avec les certificats TLS et la clé de l'itinéraire.
++
+[listing]
+----
+[netapp-user@rhel7 ~]$ oc create secret tls astra-route-tls -n openshift-image-registry –cert/home/admin/netapp-astra/tls.crt --key=/home/admin/netapp-astra/tls.key
+----
+.. Modifiez l'opérateur imageregistry et ajoutez les paramètres suivants au `spec` section.
++
+[listing]
+----
+[netapp-user@rhel7 ~]$ oc edit configs.imageregistry.operator.openshift.io
+
+routes:
+  - hostname: astra-registry.apps.ocp-vmw.cie.netapp.com
+    name: netapp-astra-route
+    secretName: astra-route-tls
+----
+
+
+****
+. Modifiez à nouveau l'opérateur imageregistry et changez l'état de gestion de l'opérateur en `Managed` État.  Enregistrer et quitter.
++
+[listing]
+----
+oc edit configs.imageregistry/cluster
+
+managementState: Managed
+----
+. Si toutes les conditions préalables sont satisfaites, des PVC, des pods et des services sont créés pour le registre d'images privé.  Dans quelques minutes, le registre devrait être opérationnel.
++
+[listing]
+----
+[netapp-user@rhel7 ~]$oc get all -n openshift-image-registry
+
+NAME                                                   READY   STATUS      RESTARTS   AGE
+pod/cluster-image-registry-operator-74f6d954b6-rb7zr   1/1     Running     3          90d
+pod/image-pruner-1627257600-f5cpj                      0/1     Completed   0          2d9h
+pod/image-pruner-1627344000-swqx9                      0/1     Completed   0          33h
+pod/image-pruner-1627430400-rv5nt                      0/1     Completed   0          9h
+pod/image-registry-6758b547f-6pnj8                     1/1     Running     0          76m
+pod/node-ca-bwb5r                                      1/1     Running     0          90d
+pod/node-ca-f8w54                                      1/1     Running     0          90d
+pod/node-ca-gjx7h                                      1/1     Running     0          90d
+pod/node-ca-lcx4k                                      1/1     Running     0          33d
+pod/node-ca-v7zmx                                      1/1     Running     0          7d21h
+pod/node-ca-xpppp                                      1/1     Running     0          89d
+
+NAME                              TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)     AGE
+service/image-registry            ClusterIP   172.30.196.167   <none>        5000/TCP    15h
+service/image-registry-operator   ClusterIP   None             <none>        60000/TCP   90d
+
+NAME                     DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
+daemonset.apps/node-ca   6         6         6       6            6           kubernetes.io/os=linux   90d
+
+NAME                                              READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/cluster-image-registry-operator   1/1     1            1           90d
+deployment.apps/image-registry                    1/1     1            1           15h
+
+NAME                                                         DESIRED   CURRENT   READY   AGE
+replicaset.apps/cluster-image-registry-operator-74f6d954b6   1         1         1       90d
+replicaset.apps/image-registry-6758b547f                     1         1         1       76m
+replicaset.apps/image-registry-78bfbd7f59                    0         0         0       15h
+replicaset.apps/image-registry-7fcc8d6cc8                    0         0         0       80m
+replicaset.apps/image-registry-864f88f5b                     0         0         0       15h
+replicaset.apps/image-registry-cb47fffb                      0         0         0       10h
+
+NAME                                COMPLETIONS   DURATION   AGE
+job.batch/image-pruner-1627257600   1/1           10s        2d9h
+job.batch/image-pruner-1627344000   1/1           6s         33h
+job.batch/image-pruner-1627430400   1/1           5s         9h
+
+NAME                         SCHEDULE    SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+cronjob.batch/image-pruner   0 0 * * *   False     0        9h              90d
+
+NAME                                     HOST/PORT                                           PATH   SERVICES         PORT    TERMINATION   WILDCARD
+route.route.openshift.io/public-routes   astra-registry.apps.ocp-vmw.cie.netapp.com          image-registry   <all>   reencrypt     None
+----
+. Si vous utilisez les certificats TLS par défaut pour la route de registre OpenShift de l’opérateur d’entrée, vous pouvez récupérer les certificats TLS à l’aide de la commande suivante.
++
+[listing]
+----
+[netapp-user@rhel7 ~]$ oc extract secret/router-ca --keys=tls.crt -n openshift-ingress-operator
+----
+. Pour permettre aux nœuds OpenShift d’accéder aux images du registre et de les extraire, ajoutez les certificats au client Docker sur les nœuds OpenShift.  Créer une configuration dans le `openshift-config` espace de noms à l'aide des certificats TLS et appliquez-le à la configuration de l'image du cluster pour rendre le certificat fiable.
++
+[listing]
+----
+[netapp-user@rhel7 ~]$ oc create configmap astra-ca -n openshift-config --from-file=astra-registry.apps.ocp-vmw.cie.netapp.com=tls.crt
+
+[netapp-user@rhel7 ~]$ oc patch image.config.openshift.io/cluster --patch '{"spec":{"additionalTrustedCA":{"name":"astra-ca"}}}' --type=merge
+----
+. Le registre interne d'OpenShift est contrôlé par authentification.  Tous les utilisateurs d'OpenShift peuvent accéder au registre OpenShift, mais les opérations que l'utilisateur connecté peut effectuer dépendent des autorisations de l'utilisateur.
++
+.. Pour permettre à un utilisateur ou à un groupe d'utilisateurs d'extraire des images du registre, le ou les utilisateurs doivent avoir le rôle de visualiseur de registre attribué.
++
+[listing]
+----
+[netapp-user@rhel7 ~]$ oc policy add-role-to-user registry-viewer ocp-user
+
+[netapp-user@rhel7 ~]$ oc policy add-role-to-group registry-viewer ocp-user-group
+----
+.. Pour permettre à un utilisateur ou à un groupe d'utilisateurs d'écrire ou de pousser des images, le ou les utilisateurs doivent avoir le rôle d'éditeur de registre attribué.
++
+[listing]
+----
+[netapp-user@rhel7 ~]$ oc policy add-role-to-user registry-editor ocp-user
+
+[netapp-user@rhel7 ~]$ oc policy add-role-to-group registry-editor ocp-user-group
+----
+
+
+. Pour que les nœuds OpenShift puissent accéder au registre et envoyer ou extraire les images, vous devez configurer un secret d'extraction.
++
+[listing]
+----
+[netapp-user@rhel7 ~]$ oc create secret docker-registry astra-registry-credentials --docker-server=astra-registry.apps.ocp-vmw.cie.netapp.com --docker-username=ocp-user --docker-password=password
+----
+. Ce secret d'extraction peut ensuite être appliqué aux comptes de service ou être référencé dans la définition de pod correspondante.
++
+.. Pour appliquer le correctif aux comptes de service, exécutez la commande suivante.
++
+[listing]
+----
+[netapp-user@rhel7 ~]$ oc secrets link <service_account_name> astra-registry-credentials --for=pull
+----
+.. Pour référencer le secret d'extraction dans la définition du pod, ajoutez le paramètre suivant au `spec` section.
++
+[listing]
+----
+imagePullSecrets:
+  - name: astra-registry-credentials
+----
+
+
+. Pour envoyer ou extraire une image à partir de postes de travail autres que le nœud OpenShift, procédez comme suit.
++
+.. Ajoutez les certificats TLS au client Docker.
++
+[listing]
+----
+[netapp-user@rhel7 ~]$ sudo mkdir /etc/docker/certs.d/astra-registry.apps.ocp-vmw.cie.netapp.com
+
+[netapp-user@rhel7 ~]$ sudo cp /path/to/tls.crt /etc/docker/certs.d/astra-registry.apps.ocp-vmw.cie.netapp.com
+----
+.. Connectez-vous à OpenShift à l’aide de la commande oc login.
++
+[listing]
+----
+[netapp-user@rhel7 ~]$ oc login --token=sha256~D49SpB_lesSrJYwrM0LIO-VRcjWHu0a27vKa0 --server=https://api.ocp-vmw.cie.netapp.com:6443
+----
+.. Connectez-vous au registre à l’aide des informations d’identification de l’utilisateur OpenShift avec la commande podman/docker.
++
+[role="tabbed-block"]
+====
+.podman
+--
+[listing]
+----
+[netapp-user@rhel7 ~]$ podman login astra-registry.apps.ocp-vmw.cie.netapp.com -u kubeadmin -p $(oc whoami -t) --tls-verify=false
+----
++ REMARQUE : si vous utilisez `kubeadmin` l'utilisateur doit se connecter au registre privé, puis utiliser un jeton au lieu d'un mot de passe.
+
+--
+.docker
+--
+[listing]
+----
+[netapp-user@rhel7 ~]$ docker login astra-registry.apps.ocp-vmw.cie.netapp.com -u kubeadmin -p $(oc whoami -t)
+----
++ REMARQUE : si vous utilisez `kubeadmin` l'utilisateur doit se connecter au registre privé, puis utiliser un jeton au lieu d'un mot de passe.
+
+--
+====
+.. Poussez ou tirez les images.
++
+[role="tabbed-block"]
+====
+.podman
+--
+[listing]
+----
+[netapp-user@rhel7 ~]$ podman push astra-registry.apps.ocp-vmw.cie.netapp.com/netapp-astra/vault-controller:latest
+[netapp-user@rhel7 ~]$ podman pull astra-registry.apps.ocp-vmw.cie.netapp.com/netapp-astra/vault-controller:latest
+----
+--
+.docker
+--
+[listing]
+----
+[netapp-user@rhel7 ~]$ docker push astra-registry.apps.ocp-vmw.cie.netapp.com/netapp-astra/vault-controller:latest
+[netapp-user@rhel7 ~]$ docker pull astra-registry.apps.ocp-vmw.cie.netapp.com/netapp-astra/vault-controller:latest
+----
+--
+====
+
+
+

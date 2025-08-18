@@ -1,0 +1,56 @@
+---
+sidebar: sidebar 
+permalink: openshift/os-multitenancy-configuration.html 
+keywords: OpenShift, OCP, Trident, NetApp ONTAP, Red Hat OpenShift, Multitenancy, Multi-tenancy 
+summary: Configuration de la multilocation sur Red Hat OpenShift avec NetApp 
+---
+= Configuration
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Pour toute solution multilocataire, aucun utilisateur ne peut avoir accès à plus de ressources de cluster que nécessaire.  Ainsi, l'ensemble des ressources à configurer dans le cadre de la configuration multi-location est divisé entre l'administrateur du cluster, l'administrateur du stockage et les développeurs travaillant sur chaque projet.
+
+Le tableau suivant décrit les différentes tâches à effectuer par les différents utilisateurs :
+
+|===
+| Rôle | Tâches 
+
+
+.4+| *Administrateur de cluster* | Créer des projets pour différentes applications ou charges de travail 
+
+
+| Créer des ClusterRoles et des RoleBindings pour storage-admin 
+
+
+| Créer des rôles et des liaisons de rôle pour les développeurs attribuant l'accès à des projets spécifiques 
+
+
+| [Facultatif] Configurer des projets pour planifier des pods sur des nœuds spécifiques 
+
+
+.4+| *Administrateur de stockage* | Créer des SVM sur NetApp ONTAP 
+
+
+| Créer des backends Trident 
+
+
+| Créer des StorageClasses 
+
+
+| Créer des quotas de ressources de stockage 
+
+
+.3+| *Développeurs* | Valider l'accès pour créer ou corriger des PVC ou des pods dans le projet attribué 
+
+
+| Valider l'accès pour créer ou corriger des PVC ou des pods dans un autre projet 
+
+
+| Valider l'accès pour afficher ou modifier les projets, les quotas de ressources et les classes de stockage 
+|===

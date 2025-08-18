@@ -1,0 +1,106 @@
+---
+sidebar: sidebar 
+permalink: openshift/os-on-rhv.html 
+keywords: Red Hat Virtualization, OpenShift, RHV 
+summary: 'RHV est une plate-forme de centre de données virtuel d"entreprise qui fonctionne sur Red Hat Enterprise Linux (RHEL) et utilise l"hyperviseur KVM.' 
+---
+= OpenShift sur Red Hat Virtualization
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Red Hat Virtualization (RHV) est une plate-forme de centre de données virtuel d'entreprise qui s'exécute sur Red Hat Enterprise Linux (RHEL) et utilise l'hyperviseur KVM.
+
+Pour plus d'informations sur RHV, consultez lelink:https://www.redhat.com/en/technologies/virtualization/enterprise-virtualization["Site Web de virtualisation Red Hat"^] .
+
+RHV offre les fonctionnalités suivantes :
+
+* *Gestion centralisée des machines virtuelles et des hôtes* Le gestionnaire RHV s'exécute comme une machine physique ou virtuelle (VM) dans le déploiement et fournit une interface graphique Web pour la gestion de la solution à partir d'une interface centrale.
+* *Moteur auto-hébergé* Pour minimiser les exigences matérielles, RHV permet à RHV Manager (RHV-M) d'être déployé en tant que machine virtuelle sur les mêmes hôtes qui exécutent les machines virtuelles invitées.
+* *Haute disponibilité* Pour éviter toute interruption en cas de panne de l'hôte, RHV permet de configurer les machines virtuelles pour une haute disponibilité.  Les machines virtuelles hautement disponibles sont contrôlées au niveau du cluster à l’aide de politiques de résilience.
+* *Haute évolutivité* Un seul cluster RHV peut avoir jusqu'à 200 hôtes hyperviseurs, ce qui lui permet de prendre en charge les exigences des machines virtuelles massives pour héberger des charges de travail gourmandes en ressources et de niveau entreprise.
+* *Sécurité renforcée* Héritées de RHV, les technologies Secure Virtualization (sVirt) et Security Enhanced Linux (SELinux) sont utilisées par RHV à des fins de sécurité renforcée et de renforcement des hôtes et des machines virtuelles.  Le principal avantage de ces fonctionnalités est l’isolement logique d’une machine virtuelle et de ses ressources associées.
+
+
+image:redhat-openshift-003.png["Figure montrant une boîte de dialogue d'entrée/sortie ou représentant un contenu écrit"]
+
+
+
+== Conception de réseau
+
+La solution Red Hat OpenShift sur NetApp utilise deux commutateurs de données pour fournir une connectivité de données principale à 25 Gbit/s.  Il utilise également deux commutateurs de gestion supplémentaires qui fournissent une connectivité à 1 Gbit/s pour la gestion en bande des nœuds de stockage et la gestion hors bande pour la fonctionnalité IPMI.  OCP utilise le réseau logique de la machine virtuelle sur RHV pour la gestion des clusters.  Cette section décrit la disposition et l’objectif de chaque segment de réseau virtuel utilisé dans la solution et décrit les conditions préalables au déploiement de la solution.
+
+
+
+=== Exigences VLAN
+
+Red Hat OpenShift sur RHV est conçu pour séparer logiquement le trafic réseau à des fins différentes en utilisant des réseaux locaux virtuels (VLAN).  Cette configuration peut être mise à l’échelle pour répondre aux demandes des clients ou pour fournir une isolation supplémentaire pour des services réseau spécifiques.  Le tableau suivant répertorie les VLAN requis pour implémenter la solution lors de la validation de la solution chez NetApp.
+
+[cols="40%, 40%, 20%"]
+|===
+| VLAN | But | ID VLAN 
+
+
+| Réseau de gestion hors bande | Gestion des nœuds physiques et IPMI | 16 
+
+
+| Réseau VM | Accès réseau invité virtuel | 1172 
+
+
+| Réseau de gestion en bande | Gestion des nœuds RHV-H, RHV-Manager et réseau ovirtmgmt | 3343 
+
+
+| Réseau de stockage | Réseau de stockage pour NetApp Element iSCSI | 3344 
+
+
+| Réseau de migration | Réseau pour la migration des invités virtuels | 3345 
+|===
+
+
+=== Ressources de soutien à l'infrastructure réseau
+
+L'infrastructure suivante doit être en place avant le déploiement de la plateforme de conteneurs OpenShift :
+
+* Au moins un serveur DNS fournissant une résolution complète du nom d'hôte accessible depuis le réseau de gestion en bande et le réseau VM.
+* Au moins un serveur NTP accessible depuis le réseau de gestion en bande et le réseau VM.
+* (Facultatif) Connectivité Internet sortante pour le réseau de gestion en bande et le réseau VM.
+
+
+
+
+== Bonnes pratiques pour les déploiements de production
+
+Cette section répertorie plusieurs bonnes pratiques qu’une organisation doit prendre en compte avant de déployer cette solution en production.
+
+
+
+=== Déployer OpenShift sur un cluster RHV d'au moins trois nœuds
+
+L'architecture vérifiée décrite dans ce document présente le déploiement matériel minimal adapté aux opérations HA en déployant deux nœuds d'hyperviseur RHV-H et en garantissant une configuration tolérante aux pannes où les deux hôtes peuvent gérer le moteur hébergé et les machines virtuelles déployées peuvent migrer entre les deux hyperviseurs.
+
+Étant donné que Red Hat OpenShift se déploie initialement avec trois nœuds maîtres, il est garanti dans une configuration à deux nœuds qu'au moins deux maîtres occuperont le même nœud, ce qui peut entraîner une éventuelle panne d'OpenShift si ce nœud spécifique devient indisponible.  Par conséquent, il s'agit d'une bonne pratique de Red Hat qu'au moins trois nœuds d'hyperviseur RHV-H soient déployés dans le cadre de la solution afin que les maîtres OpenShift puissent être répartis uniformément et que la solution reçoive un degré supplémentaire de tolérance aux pannes.
+
+
+
+=== Configurer l'affinité machine virtuelle/hôte
+
+Vous pouvez distribuer les maîtres OpenShift sur plusieurs nœuds d’hyperviseur en activant l’affinité VM/hôte.
+
+L'affinité est un moyen de définir des règles pour un ensemble de machines virtuelles et/ou d'hôtes qui déterminent si les machines virtuelles s'exécutent ensemble sur le même hôte ou sur des hôtes du groupe ou sur des hôtes différents.  Il est appliqué aux machines virtuelles en créant des groupes d'affinité constitués de machines virtuelles et/ou d'hôtes avec un ensemble de paramètres et de conditions identiques.  Selon que les machines virtuelles d'un groupe d'affinité s'exécutent sur le même hôte ou sur les mêmes hôtes du groupe ou séparément sur des hôtes différents, les paramètres du groupe d'affinité peuvent définir une affinité positive ou une affinité négative.
+
+Les conditions définies pour les paramètres peuvent être soit strictes, soit souples.  Une application stricte garantit que les machines virtuelles d'un groupe d'affinité suivent toujours l'affinité positive ou négative de manière stricte, sans tenir compte des conditions externes.  L'application souple garantit qu'une préférence plus élevée est définie pour les machines virtuelles d'un groupe d'affinité afin de suivre l'affinité positive ou négative chaque fois que cela est possible.  Dans la configuration à deux ou trois hyperviseurs décrite dans ce document, l'affinité douce est le paramètre recommandé.  Dans les clusters plus grands, l’affinité dure peut distribuer correctement les nœuds OpenShift.
+
+Pour configurer les groupes d'affinité, consultez lelink:https://access.redhat.com/documentation/en-us/red_hat_virtualization/4.4/html/virtual_machine_management_guide/sect-affinity_groups["Red Hat 6.11.  Documentation sur les groupes d'affinité"^] .
+
+
+
+=== Utiliser un fichier d'installation personnalisé pour le déploiement d'OpenShift
+
+IPI facilite le déploiement des clusters OpenShift grâce à l'assistant interactif décrit précédemment dans ce document.  Cependant, il est possible que certaines valeurs par défaut doivent être modifiées dans le cadre du déploiement du cluster.
+
+Dans ces cas, vous pouvez exécuter l’assistant sans déployer immédiatement un cluster.  Au lieu de cela, un fichier de configuration est créé à partir duquel le cluster peut être déployé ultérieurement.  Ceci est très utile si vous souhaitez modifier les valeurs par défaut de l'IPI ou si vous souhaitez déployer plusieurs clusters identiques dans votre environnement pour d'autres utilisations telles que le multi-hébergement.  Pour plus d'informations sur la création d'une configuration d'installation personnalisée pour OpenShift, consultezlink:https://docs.openshift.com/container-platform/4.4/installing/installing_rhv/installing-rhv-customizations.html["Red Hat OpenShift Installation d'un cluster sur RHV avec personnalisations"^] .

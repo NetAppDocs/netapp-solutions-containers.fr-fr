@@ -1,0 +1,37 @@
+---
+sidebar: sidebar 
+permalink: tanzu/vtwn-overview-netapp.html 
+keywords: NetApp, ONTAP, Element, Storage, Tanzu, VMware Tanzu with NetApp ONTAP 
+summary: NetApp dispose de plusieurs plates-formes de stockage qualifiées avec Trident et Trident Protect pour provisionner, protéger et gérer les données des applications conteneurisées et ainsi aider à définir et à maximiser le débit DevOps. 
+---
+= Présentation des systèmes de stockage NetApp
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+:solution_name: VMware Tanzu with NetApp
+:ontap_page_link: vtwn-netapp-ontap.html
+
+
+[role="lead"]
+NetApp dispose de plusieurs plates-formes de stockage qualifiées avec Trident et Trident Protect pour provisionner, protéger et gérer les données des applications conteneurisées et ainsi aider à définir et à maximiser le débit DevOps.
+
+[role="normal"]
+NetApp dispose de plusieurs plates-formes de stockage qualifiées avec Trident pour provisionner, protéger et gérer les données des applications conteneurisées.
+
+image:redhat-openshift-043.png["Figure montrant une boîte de dialogue d'entrée/sortie ou représentant un contenu écrit"]
+
+* Les systèmes AFF et FAS exécutent NetApp ONTAP et fournissent un stockage pour les cas d'utilisation basés sur des fichiers (NFS) et basés sur des blocs (iSCSI).
+* Cloud Volumes ONTAP et ONTAP Select offrent respectivement les mêmes avantages dans le cloud et dans l'espace virtuel.
+* Google Cloud NetApp Volumes (AWS/GCP) et Azure NetApp Files fournissent un stockage basé sur des fichiers dans le cloud.
+
+
+
+NOTE: Chaque système de stockage du portefeuille NetApp peut faciliter à la fois la gestion des données et le déplacement entre les sites sur site et le cloud afin que vos données se trouvent là où se trouvent vos applications.
+
+Les pages suivantes contiennent des informations supplémentaires sur les systèmes de stockage NetApp validés dans la solution {solution_name} :
+
+* link:vtwn-netapp-ontap.html["NetApp ONTAP"]
+

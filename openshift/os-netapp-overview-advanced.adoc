@@ -1,0 +1,26 @@
+---
+sidebar: sidebar 
+permalink: openshift/os-netapp-overview-advanced.html 
+keywords: Advanced Configuration, Load Balancers, Custom Registry 
+summary: 'Cette section est dédiée aux personnalisations que les utilisateurs réels devront probablement effectuer lors du déploiement de cette solution en production, comme la création d"un registre d"images dédié ou le déploiement d"instances d"équilibreur de charge personnalisées.' 
+---
+= Options de configuration avancées
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+En règle générale, la solution la plus simple à déployer est la meilleure, mais dans certains cas, des personnalisations avancées sont nécessaires pour répondre aux exigences ou aux spécifications d'une application spécifique ou de l'environnement dans lequel la solution est déployée.  À cette fin, la solution Red Hat OpenShift avec NetApp permet les personnalisations suivantes pour répondre à ces besoins.
+
+
+NOTE: Dans cette section, nous avons documenté certaines options de configuration avancées telles que l’utilisation d’équilibreurs de charge tiers ou la création d’un registre privé pour l’hébergement d’images de conteneurs personnalisées, qui sont toutes deux des conditions préalables à l’installation de NetApp Trident Protect.
+
+Les pages suivantes contiennent des informations supplémentaires sur les options de configuration avancées validées dans la solution Red Hat OpenShift avec NetApp :
+
+* link:os-load-balancers.html["Explorer les options d'équilibrage de charge"]
+* link:os-private-registry.html["Configuration des registres d'images privés"]
+
