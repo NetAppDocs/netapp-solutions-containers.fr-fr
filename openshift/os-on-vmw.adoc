@@ -98,7 +98,7 @@ Il est possible de garantir la distribution des maîtres OpenShift sur plusieurs
 
 L'affinité ou l'anti-affinité est un moyen de définir des règles pour un ensemble de machines virtuelles et/ou d'hôtes qui déterminent si les machines virtuelles s'exécutent ensemble sur le même hôte ou sur des hôtes du groupe ou sur des hôtes différents.  Il est appliqué aux machines virtuelles en créant des groupes d'affinité constitués de machines virtuelles et/ou d'hôtes avec un ensemble de paramètres et de conditions identiques.  Selon que les machines virtuelles d'un groupe d'affinité s'exécutent sur le même hôte ou sur les mêmes hôtes du groupe ou séparément sur des hôtes différents, les paramètres du groupe d'affinité peuvent définir une affinité positive ou une affinité négative.
 
-Pour configurer les groupes d'affinité, consultez lelink:https://docs.vmware.com/en/VMware-vSphere/6.7/com.vmware.vsphere.resmgmt.doc/GUID-FF28F29C-8B67-4EFF-A2EF-63B3537E6934.html["Documentation vSphere 6.7 : Utilisation des règles d'affinité DRS"^] .
+Pour configurer les groupes d'affinité, consultez la section link:https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0/vsphere-resource-management/using-drs-clusters-to-manage-resources/using-vm-host-affinity-rules.html["Documentation vSphere 9.0 : Utilisation des règles d'affinité DRS"^].
 
 
 

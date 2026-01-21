@@ -154,9 +154,9 @@ La distribution des nœuds de cluster Anthos sur plusieurs nœuds d'hyperviseur 
 
 L'affinité ou l'anti-affinité est un moyen de définir des règles pour un ensemble de machines virtuelles et/ou d'hôtes qui déterminent si les machines virtuelles s'exécutent ensemble sur le même hôte ou sur des hôtes du groupe ou sur des hôtes différents.  Il est appliqué aux machines virtuelles en créant des groupes d'affinité constitués de machines virtuelles et/ou d'hôtes avec un ensemble de paramètres et de conditions identiques.  Selon que les machines virtuelles d'un groupe d'affinité s'exécutent sur le même hôte ou sur les mêmes hôtes du groupe ou séparément sur des hôtes différents, les paramètres du groupe d'affinité peuvent définir une affinité positive ou une affinité négative.
 
-Pour configurer des groupes d’affinité, consultez le lien approprié ci-dessous pour votre version de VMWare vSphere.
+Pour configurer les groupes d'affinité, consultez le lien approprié ci-dessous pour votre version de VMware vSphere.
 
-https://docs.vmware.com/en/VMware-vSphere/6.7/com.vmware.vsphere.resmgmt.doc/GUID-FF28F29C-8B67-4EFF-A2EF-63B3537E6934.html["Documentation vSphere 6.7 : Utilisation des règles d'affinité DRS"^] . https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.resmgmt.doc/GUID-FF28F29C-8B67-4EFF-A2EF-63B3537E6934.html["Documentation vSphere 7.0 : Utilisation des règles d'affinité DRS"^] .
+https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0/vsphere-resource-management/using-drs-clusters-to-manage-resources/using-vm-host-affinity-rules.html["Documentation vSphere 9.0 : Utilisation des règles d'affinité DRS"^]. hhttps://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/7-0/vsphere-resource-management/using-drs-clusters-to-manage-resources/using-vm-host-affinity-rules.html[Documentation vSphere 7.0 : Utilisation des règles d’affinité DRS^].
 
 
 NOTE: Anthos dispose d'une option de configuration dans chaque individu `cluster.yaml` fichier pour créer automatiquement des règles d'affinité de nœud qui peuvent être activées ou désactivées en fonction du nombre d'hôtes ESXi dans votre environnement.

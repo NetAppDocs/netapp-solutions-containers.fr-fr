@@ -42,22 +42,12 @@ indexpage:
       url: "/openshift/os-storint-overview.html"
     - title: Cas d'utilisation
       url: "/openshift/os-use-cases.html"
-  - title: VMware Tanzu avec NetApp
-    links:
-    - title: Présentation de la solution
-      url: "/tanzu/vtwn-solution-overview.html"
-    - title: À propos de VMware Tanzu
-      url: "/tanzu/vtwn-overview-vmware-tanzu.html"
-    - title: Intégrations de stockage NetApp
-      url: "/tanzu/vtwn-overview-storint.html"
   - title: Solutions partenaires
     links:
     - title: Site Web d'Anthos
       url: https://cloud.google.com/anthos
     - title: Site Web Red Hat OpenShift
       url: https://www.redhat.com/en/technologies/cloud-computing/openshift
-    - title: Site Web de VMware Tanzu
-      url: https://tanzu.vmware.com/
   - title: Demandes de solutions et commentaires
     links:
     - title: Automatisation des demandes
