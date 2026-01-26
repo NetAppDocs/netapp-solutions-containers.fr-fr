@@ -152,7 +152,9 @@ L'affinité ou l'anti-affinité est un moyen de définir des règles pour un ens
 
 Pour configurer les groupes d'affinité, consultez le lien approprié ci-dessous pour votre version de VMware vSphere.
 
-https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0/vsphere-resource-management/using-drs-clusters-to-manage-resources/using-vm-host-affinity-rules.html["Documentation vSphere 9.0 : Utilisation des règles d'affinité DRS"^]. https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/7-0/vsphere-resource-management/using-drs-clusters-to-manage-resources/using-vm-host-affinity-rules.html["vSphere 7.0 Documentation : Utilisation des règles d’affinité DRS"^].
+* link:https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0/vsphere-resource-management/using-drs-clusters-to-manage-resources/using-vm-host-affinity-rules.html["Documentation vSphere 9.0 : Utilisation des règles d'affinité DRS"^]
+* link:https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/7-0/vsphere-resource-management/using-drs-clusters-to-manage-resources/using-vm-host-affinity-rules.html["vSphere 7.0 Documentation : Utilisation des règles d’affinité DRS"^]
+
 
 
 NOTE: Anthos dispose d'une option de configuration dans chaque individu `cluster.yaml` fichier pour créer automatiquement des règles d'affinité de nœud qui peuvent être activées ou désactivées en fonction du nombre d'hôtes ESXi dans votre environnement.
