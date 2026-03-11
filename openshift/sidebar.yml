@@ -95,7 +95,7 @@ entries:
       url: "/openshift/os-adv-mgmt-observability.html"
     - title: Créer des ressources
       url: "/openshift/os-adv-mgmt-create-resources.html"
-- title: Protection des données avec Trident Protect
+- title: Protection des données à l'aide de Trident Protect
   url: "/openshift/os-trident-protect.html"
 - title: Protection des données à l'aide d'outils tiers
   url: "/openshift/os-velero.html"
