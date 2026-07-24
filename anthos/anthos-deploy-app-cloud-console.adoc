@@ -18,6 +18,7 @@ Cette section détaille comment déployer une application sur votre cluster Anth
 
 
 
+[[prerequisites]]
 == Prérequis
 
 * Un cluster Anthos déployé sur site et enregistré auprès de Google Cloud Console
@@ -28,6 +29,7 @@ Cette section détaille comment déployer une application sur votre cluster Anth
 
 
 
+[[deploying-an-application]]
 == Déployer une application
 
 Pour ce cas d’utilisation, nous déployons une application WordPress simple sur l’un de nos clusters Anthos à l’aide de la console Google Cloud.  Le déploiement utilise le stockage persistant fourni par NetApp ONTAP dans une classe de stockage prédéfinie.  Nous démontrons ensuite deux méthodes différentes pour modifier le service par défaut des applications afin que l'équilibreur de charge MetalLB lui fournisse une adresse IP et l'expose au monde.
@@ -78,12 +80,14 @@ image:a-w-n-use-case-deploy-app-003.png["Application en cours d'exécution"]
 
 
 
+[[exposing-the-application]]
 == Exposer l'application
 
 Une fois l’application déployée, vous disposez de deux méthodes pour lui attribuer une adresse IP accessible dans le monde entier.
 
 
 
+[[using-the-google-cloud-console]]
 === Utilisation de la console Google Cloud
 
 Vous pouvez exposer l'application en utilisant la console Google Cloud et en modifiant la sortie YAML des services dans un navigateur pour définir une adresse IP accessible publiquement.  Pour ce faire, procédez comme suit :
@@ -111,6 +115,7 @@ image:a-w-n-use-case-deploy-app-015.png["Détails du service définitifs"]
 
 
 
+[[patching-the-service-with-kubectl]]
 === Correction du service avec Kubectl
 
 Vous pouvez exposer l'application en utilisant la CLI et le `kubectl patch` commande pour modifier votre déploiement et définir une IP accessible publiquement. Pour ce faire, procédez comme suit :
@@ -135,6 +140,7 @@ image:a-w-n-use-case-deploy-app-001.png["Service de correctifs pour le type Load
 
 
 
+[[visit-the-application-at-the-exposed-external-ip]]
 == Visitez l'application à l'adresse IP externe exposée
 
 Maintenant que vous avez l’application exposée avec une adresse IP accessible publiquement, vous pouvez visiter votre instance WordPress à l’aide d’un navigateur.

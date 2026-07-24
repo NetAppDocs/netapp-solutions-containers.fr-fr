@@ -20,6 +20,7 @@ Ce document de référence fournit la validation du déploiement de la solution 
 
 
 
+[[use-cases]]
 == Cas d'utilisation
 
 La solution Anthos avec NetApp est conçue pour offrir une valeur exceptionnelle aux clients avec les cas d'utilisation suivants :
@@ -31,6 +32,7 @@ La solution Anthos avec NetApp est conçue pour offrir une valeur exceptionnelle
 
 
 
+[[business-value]]
 == Valeur commerciale
 
 Les entreprises adoptent de plus en plus les pratiques DevOps pour créer de nouveaux produits, raccourcir les cycles de publication et ajouter rapidement de nouvelles fonctionnalités.  En raison de leur nature agile innée, les conteneurs et les microservices jouent un rôle crucial dans le soutien des pratiques DevOps.  Cependant, la pratique de DevOps à l’échelle de la production dans un environnement d’entreprise présente ses propres défis et impose certaines exigences à l’infrastructure sous-jacente, telles que les suivantes :
@@ -48,12 +50,14 @@ La solution Anthos avec NetApp reconnaît ces défis et présente une solution q
 
 
 
+[[technology-overview]]
 == Aperçu de la technologie
 
 La solution Anthos avec NetApp comprend les principaux composants suivants :
 
 
 
+[[anthos-on-prem]]
 === Anthos sur site
 
 Anthos On Prem est une plateforme Kubernetes d'entreprise entièrement prise en charge qui peut être déployée dans l'hyperviseur VMware vSphere ou sur une infrastructure bare metal de votre choix.
@@ -62,6 +66,7 @@ Pour plus d'informations sur Anthos, consultez le site Web d'Anthos situé https
 
 
 
+[[netapp-storage-systems]]
 === Systèmes de stockage NetApp
 
 NetApp dispose de plusieurs systèmes de stockage parfaits pour les centres de données d’entreprise et les déploiements de cloud hybride.  Le portefeuille NetApp comprend NetApp ONTAP, Cloud Volumes ONTAP, Google Cloud NetApp Volumes, Azure NetApp Files, FSx ONTAP pour les systèmes de stockage NetApp ONTAP , qui peuvent tous fournir un stockage persistant pour les applications conteneurisées.
@@ -70,6 +75,7 @@ Pour plus d'informations, visitez le site Web de NetApp https://www.netapp.com["
 
 
 
+[[netapp-storage-integrations]]
 === Intégrations de stockage NetApp
 
 Trident est un orchestrateur de stockage open source et entièrement pris en charge pour les conteneurs et les distributions Kubernetes, y compris Anthos.
@@ -78,12 +84,14 @@ Pour plus d'informations, visitez le site Web de Trident https://docs.netapp.com
 
 
 
+[[advanced-configuration-options]]
 == Options de configuration avancées
 
 Cette section est dédiée aux personnalisations que les utilisateurs réels devront probablement effectuer lors du déploiement de cette solution en production, comme la création d'un registre d'images privé dédié ou le déploiement d'instances d'équilibreur de charge personnalisées.
 
 
 
+[[current-support-matrix-for-validated-releases]]
 == Matrice de support actuelle pour les versions validées
 
 Voir https://cloud.google.com/anthos/docs/resources/partner-storage#netapp["ici"] pour la matrice de support des versions validées.

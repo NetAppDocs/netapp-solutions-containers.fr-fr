@@ -18,6 +18,7 @@ Cette section fournit les étapes à suivre pour déployer un pipeline d'intégr
 
 
 
+[[create-the-resources-required-for-jenkins-deployment]]
 == Créer les ressources nécessaires au déploiement de Jenkins
 
 Pour créer les ressources nécessaires au déploiement de l’application Jenkins, procédez comme suit :
@@ -33,6 +34,7 @@ image:redhat-openshift-016.png["Figure montrant une boîte de dialogue d'entrée
 
 
 
+[[deploy-jenkins-with-persistent-storage]]
 == Déployer Jenkins avec un stockage persistant
 
 Pour déployer Jenkins avec un stockage persistant, procédez comme suit :

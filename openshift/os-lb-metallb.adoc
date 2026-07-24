@@ -20,6 +20,7 @@ MetalLB est un équilibreur de charge réseau auto-hébergé installé sur votre
 
 
 
+[[metallb-configuration-options]]
 == Options de configuration de MetalLB
 
 En fonction de la manière dont MetalLB annonce l'adresse IP attribuée aux services LoadBalancer en dehors du cluster OpenShift, il fonctionne selon deux modes :
@@ -33,6 +34,7 @@ NOTE: Pour les besoins de ce document, nous configurons MetalLB en mode couche 2
 
 
 
+[[installing-the-metallb-load-balancer]]
 == Installation de l'équilibreur de charge MetalLB
 
 . Téléchargez les ressources MetalLB.

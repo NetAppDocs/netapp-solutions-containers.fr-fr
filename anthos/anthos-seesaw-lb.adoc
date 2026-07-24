@@ -20,6 +20,7 @@ Seesaw est l'équilibreur de charge réseau géré par défaut installé dans un
 
 
 
+[[installing-the-seesaw-load-balancer]]
 == Installation de l'équilibreur de charge SeeSaw
 
 L'équilibreur de charge SeeSaw est entièrement intégré à Anthos Clusters sur VMware et dispose d'un déploiement automatisé effectué dans le cadre des configurations de cluster administrateur et utilisateur.  Il y a des blocs de texte dans le `cluster.yaml` fichiers de configuration qui doivent être modifiés pour fournir des informations sur l'équilibreur de charge, puis il y a une étape supplémentaire avant le déploiement du cluster pour déployer l'équilibreur de charge à l'aide du `gkectl` outil.
@@ -29,6 +30,7 @@ NOTE: Les équilibreurs de charge SeeSaw peuvent être déployés en mode HA ou 
 
 
 
+[[integration-with-anthos]]
 == Intégration avec Anthos
 
 Il existe une section dans chaque fichier de configuration, respectivement pour le cluster d'administrateur et dans chaque cluster d'utilisateur que vous choisissez de déployer pour configurer l'équilibreur de charge afin qu'il soit géré par Anthos On-Prem.

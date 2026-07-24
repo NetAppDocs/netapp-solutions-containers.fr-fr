@@ -20,6 +20,7 @@ OpenShift sur Bare Metal est similaire aux déploiements virtuels d'OpenShift, q
 
 
 
+[[openshift-on-bare-metal-provides-the-following-features]]
 == OpenShift sur Bare Metal offre les fonctionnalités suivantes :
 
 * *IPI ou déploiement d'installateur assisté* Avec un cluster OpenShift déployé par Installer Provisioned Infrastructure (IPI) sur des serveurs bare metal, les clients peuvent déployer un environnement OpenShift hautement polyvalent et facilement évolutif directement sur des serveurs standard, sans avoir besoin de gérer une couche d'hyperviseur.
@@ -30,6 +31,7 @@ OpenShift sur Bare Metal est similaire aux déploiements virtuels d'OpenShift, q
 
 
 
+[[network-design]]
 == Conception de réseau
 
 La solution Red Hat OpenShift sur NetApp utilise deux commutateurs de données pour fournir une connectivité de données principale à 25 Gbit/s.  Il utilise également deux commutateurs de gestion qui fournissent une connectivité à 1 Gbit/s pour la gestion en bande des nœuds de stockage et la gestion hors bande pour la fonctionnalité IPMI.
@@ -50,6 +52,7 @@ image:redhat-openshift-037.png["Figure montrant une boîte de dialogue d'entrée
 
 
 
+[[vlan-requirements]]
 === Exigences VLAN
 
 La solution Red Hat OpenShift avec NetApp est conçue pour séparer logiquement le trafic réseau à différentes fins en utilisant des réseaux locaux virtuels (VLAN).
@@ -72,6 +75,7 @@ NOTE: Bien que chacun de ces réseaux soit virtuellement séparé par des VLAN, 
 
 
 
+[[network-infrastructure-support-resources]]
 === Ressources de soutien à l'infrastructure réseau
 
 L'infrastructure suivante doit être en place avant le déploiement de la plateforme de conteneurs OpenShift :

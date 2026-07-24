@@ -46,10 +46,12 @@ image:a-w-n-ontap-onpremises-virt-cloud.png["Figure montrant une boîte de dialo
 
 
 
+[[netapp-platforms]]
 == Plateformes NetApp
 
 
 
+[[netapp-afffas]]
 === NetApp AFF/ FAS
 
 NetApp fournit des plates-formes de stockage robustes entièrement flash (AFF) et hybrides évolutives (FAS), conçues sur mesure avec des performances à faible latence, une protection des données intégrée et une prise en charge multiprotocole.
@@ -60,6 +62,7 @@ Pour plus d'informations sur les plateformes NETAPP AFF et FAS , cliquez sur htt
 
 
 
+[[ontap-select]]
 === ONTAP Select
 
 ONTAP Select est un déploiement défini par logiciel de NetApp ONTAP qui peut être déployé sur un hyperviseur dans votre environnement.  Il peut être installé sur VMware vSphere ou sur KVM et offre toutes les fonctionnalités et l'expérience d'un système ONTAP basé sur le matériel.
@@ -68,6 +71,7 @@ Pour plus d'informations sur ONTAP Select, cliquez sur https://docs.netapp.com/u
 
 
 
+[[cloud-volumes-ontap]]
 === Cloud Volumes ONTAP
 
 NetApp Cloud Volumes ONTAP est une version déployée dans le cloud de NetApp ONTAP disponible pour être déployée dans un certain nombre de clouds publics, notamment : Amazon AWS, Microsoft Azure et Google Cloud.

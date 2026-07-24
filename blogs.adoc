@@ -18,6 +18,7 @@ Lisez les blogs qui offrent des conseils pratiques et des bonnes pratiques pour 
 
 
 
+[[openshift-deployment-and-integration]]
 == Déploiement et intégration d'OpenShift
 
 * link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Simplifying-Trident-Installation-on-Red-Hat-OpenShift-with-the-New-Certified/ba-p/459710["Simplification de l'installation de Trident sur Red Hat OpenShift avec le nouvel opérateur Trident certifié"]
@@ -28,6 +29,7 @@ Lisez les blogs qui offrent des conseils pratiques et des bonnes pratiques pour 
 
 
 
+[[data-protection-and-backup]]
 == Protection et sauvegarde des données
 
 * link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Crash-Consistent-Backup-and-Restore-Operations-for-OpenShift-Virtualization-VMs/ba-p/459417["Opérations de sauvegarde et de restauration cohérentes en cas de panne pour les machines virtuelles de virtualisation OpenShift utilisant Trident 25.02"]
@@ -36,6 +38,7 @@ Lisez les blogs qui offrent des conseils pratiques et des bonnes pratiques pour 
 
 
 
+[[virtualization-and-vm-operations]]
 == Virtualisation et opérations de machines virtuelles
 
 * link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Live-Migration-of-VMs-with-OpenShift-Virtualization-on-ROSA-and-Amazon-FSx-for/ba-p/456213["Migration en direct de machines virtuelles avec OpenShift Virtualization sur ROSA et Amazon FSx for NetApp ONTAP"]
@@ -44,6 +47,7 @@ Lisez les blogs qui offrent des conseils pratiques et des bonnes pratiques pour 
 
 
 
+[[storage-integration-and-performance]]
 == Intégration et performances du stockage
 
 * link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Using-NVMe-TCP-to-consume-ONTAP-storage-for-your-modern-containerized-apps-on/ba-p/453706["Utilisation de NVMe/TCP pour consommer le stockage ONTAP pour vos applications conteneurisées modernes sur VMware"]
@@ -53,6 +57,7 @@ Lisez les blogs qui offrent des conseils pratiques et des bonnes pratiques pour 
 
 
 
+[[kubernetes-and-vmware-ecosystem]]
 == Écosystème Kubernetes et VMware
 
 * link:https://blog.netapp.com/accelerate-your-k8s-journey["Utiliser VMware Tanzu avec ONTAP pour accélérer votre parcours Kubernetes"]

@@ -22,6 +22,7 @@ Pour plus d'informations sur les systèmes de stockage NetApp Element , visitez 
 
 
 
+[[iscsi-login-redirection-and-self-healing-capabilities]]
 == Redirection de connexion iSCSI et capacités d'auto-réparation
 
 Le logiciel NetApp Element exploite le protocole de stockage iSCSI, une méthode standard pour encapsuler les commandes SCSI sur un réseau TCP/IP traditionnel.  Lorsque les normes SCSI changent ou lorsque les performances des réseaux Ethernet s'améliorent, le protocole de stockage iSCSI en bénéficie sans qu'aucune modification ne soit nécessaire.
@@ -34,6 +35,7 @@ De cette manière, si une panne de nœud est suivie d'une redistribution de volu
 
 
 
+[[netapp-element-software-cluster-qos]]
 == QoS du cluster logiciel NetApp Element
 
 Un cluster logiciel NetApp Element permet de configurer dynamiquement la qualité de service en fonction du volume.  Vous pouvez utiliser les paramètres QoS par volume pour contrôler les performances de stockage en fonction des SLA que vous définissez.  Les trois paramètres configurables suivants définissent la qualité de service :
@@ -45,6 +47,7 @@ Un cluster logiciel NetApp Element permet de configurer dynamiquement la qualit�
 
 
 
+[[multitenancy]]
 == Multilocation
 
 La multilocation sécurisée est obtenue grâce aux fonctionnalités suivantes :
@@ -62,6 +65,7 @@ La multilocation sécurisée est obtenue grâce aux fonctionnalités suivantes 
 
 
 
+[[enterprise-storage-efficiencies]]
 == Efficacité du stockage d'entreprise
 
 Le cluster logiciel NetApp Element augmente l’efficacité et les performances globales du stockage.  Les fonctionnalités suivantes sont exécutées en ligne, sont toujours activées et ne nécessitent aucune configuration manuelle par l'utilisateur :

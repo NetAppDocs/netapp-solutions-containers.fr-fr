@@ -18,6 +18,7 @@ Les capacités indépendantes du matériel d'Anthos sur bare metal vous permette
 
 
 
+[[benefits]]
 == Avantages
 
 Les capacités indépendantes du matériel d'Anthos sur bare metal vous permettent de sélectionner une plate-forme de calcul optimisée pour votre cas d'utilisation personnalisé et offrent également de nombreux avantages supplémentaires.
@@ -32,10 +33,12 @@ En voici quelques exemples :
 
 
 
+[[hardware-requirements]]
 == Configuration matérielle requise
 
 
 
+[[compute]]
 === Calculer
 
 Google Cloud demande périodiquement une validation mise à jour des plates-formes de serveurs partenaires avec les nouvelles versions d'Anthos via son programme partenaire de plate-forme Anthos Ready.  Une liste des plates-formes de serveur actuellement validées et des versions d'Anthos prises en charge est disponible. https://cloud.google.com/anthos/docs/resources/partner-platforms["ici"^] .
@@ -55,6 +58,7 @@ Le tableau suivant contient les plates-formes de serveur qui ont été testées 
 |===
 
 
+[[operating-system]]
 === Système opérateur
 
 Les nœuds Anthos sur bare metal peuvent être configurés avec plusieurs distributions Linux différentes choisies par le client pour s'adapter à son infrastructure de centre de données actuelle.
@@ -78,6 +82,7 @@ Le tableau suivant contient une liste des systèmes d’exploitation Linux qui o
 |===
 
 
+[[additional-hardware]]
 === Matériel supplémentaire
 
 Pour compléter le déploiement d'Anthos sur bare metal en tant que solution entièrement validée, des composants de centre de données supplémentaires pour la mise en réseau et le stockage ont été testés par NetApp et nos ingénieurs partenaires.
@@ -95,6 +100,7 @@ Le tableau suivant contient des informations sur ces composants d’infrastructu
 |===
 
 
+[[additional-software]]
 === Logiciels supplémentaires
 
 Le tableau suivant inclut une liste des versions logicielles supplémentaires déployées dans l’environnement de validation.
@@ -122,6 +128,7 @@ NOTE: Cet environnement multi-OS montre l'interopérabilité avec les versions d
 
 
 
+[[infrastructure-support-resources]]
 === Ressources de soutien aux infrastructures
 
 L'infrastructure suivante doit être en place avant le déploiement d'Anthos sur bare metal :

@@ -28,6 +28,7 @@ NOTE: Un système F5 BIG-IP peut être déployé sur du matériel dédié, dans 
 
 
 
+[[validated-releases]]
 == Versions validées
 
 Cette solution utilise l’appliance virtuelle déployée dans VMware vSphere.  La mise en réseau de l'appliance virtuelle F5 Big-IP peut être configurée dans une configuration à deux ou trois bras en fonction de votre environnement réseau.  Le déploiement dans ce document est basé sur la configuration à deux bras.  Des détails supplémentaires sur la configuration de l'appliance virtuelle à utiliser avec Anthos sont disponibles. https://cloud.google.com/solutions/partners/installing-f5-big-ip-adc-for-gke-on-prem["ici"] .
@@ -47,6 +48,7 @@ L'équipe d'ingénierie des solutions de NetApp a validé les versions du tablea
 |===
 
 
+[[installation]]
 == Installation
 
 Pour installer F5 BIG-IP, procédez comme suit :
@@ -133,6 +135,7 @@ image:big-ip-config-012.png["Configuration Big-IP, partie 12"]
 
 
 
+[[integration-with-anthos]]
 == Intégration avec Anthos
 
 Il existe une section dans chaque fichier de configuration, respectivement pour le cluster d'administrateur et chaque cluster d'utilisateur que vous choisissez de déployer pour configurer l'équilibreur de charge afin qu'il soit géré par Anthos On Prem.

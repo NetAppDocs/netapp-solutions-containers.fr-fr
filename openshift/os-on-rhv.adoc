@@ -31,12 +31,14 @@ image:redhat-openshift-003.png["Figure montrant une boîte de dialogue d'entrée
 
 
 
+[[network-design]]
 == Conception de réseau
 
 La solution Red Hat OpenShift sur NetApp utilise deux commutateurs de données pour fournir une connectivité de données principale à 25 Gbit/s.  Il utilise également deux commutateurs de gestion supplémentaires qui fournissent une connectivité à 1 Gbit/s pour la gestion en bande des nœuds de stockage et la gestion hors bande pour la fonctionnalité IPMI.  OCP utilise le réseau logique de la machine virtuelle sur RHV pour la gestion des clusters.  Cette section décrit la disposition et l’objectif de chaque segment de réseau virtuel utilisé dans la solution et décrit les conditions préalables au déploiement de la solution.
 
 
 
+[[vlan-requirements]]
 === Exigences VLAN
 
 Red Hat OpenShift sur RHV est conçu pour séparer logiquement le trafic réseau à des fins différentes en utilisant des réseaux locaux virtuels (VLAN).  Cette configuration peut être mise à l’échelle pour répondre aux demandes des clients ou pour fournir une isolation supplémentaire pour des services réseau spécifiques.  Le tableau suivant répertorie les VLAN requis pour implémenter la solution lors de la validation de la solution chez NetApp.
@@ -62,6 +64,7 @@ Red Hat OpenShift sur RHV est conçu pour séparer logiquement le trafic réseau
 |===
 
 
+[[network-infrastructure-support-resources]]
 === Ressources de soutien à l'infrastructure réseau
 
 L'infrastructure suivante doit être en place avant le déploiement de la plateforme de conteneurs OpenShift :
@@ -73,12 +76,14 @@ L'infrastructure suivante doit être en place avant le déploiement de la platef
 
 
 
+[[best-practices-for-production-deployments]]
 == Bonnes pratiques pour les déploiements de production
 
 Cette section répertorie plusieurs bonnes pratiques qu’une organisation doit prendre en compte avant de déployer cette solution en production.
 
 
 
+[[deploy-openshift-to-an-rhv-cluster-of-at-least-three-nodes]]
 === Déployer OpenShift sur un cluster RHV d'au moins trois nœuds
 
 L'architecture vérifiée décrite dans ce document présente le déploiement matériel minimal adapté aux opérations HA en déployant deux nœuds d'hyperviseur RHV-H et en garantissant une configuration tolérante aux pannes où les deux hôtes peuvent gérer le moteur hébergé et les machines virtuelles déployées peuvent migrer entre les deux hyperviseurs.
@@ -87,6 +92,7 @@ L'architecture vérifiée décrite dans ce document présente le déploiement ma
 
 
 
+[[configure-virtual-machinehost-affinity]]
 === Configurer l'affinité machine virtuelle/hôte
 
 Vous pouvez distribuer les maîtres OpenShift sur plusieurs nœuds d’hyperviseur en activant l’affinité VM/hôte.
@@ -99,6 +105,7 @@ Pour configurer les groupes d'affinité, consultez lelink:https://access.redhat.
 
 
 
+[[use-a-custom-install-file-for-openshift-deployment]]
 === Utiliser un fichier d'installation personnalisé pour le déploiement d'OpenShift
 
 IPI facilite le déploiement des clusters OpenShift grâce à l'assistant interactif décrit précédemment dans ce document.  Cependant, il est possible que certaines valeurs par défaut doivent être modifiées dans le cadre du déploiement du cluster.

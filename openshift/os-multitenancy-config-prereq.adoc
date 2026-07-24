@@ -18,6 +18,7 @@ Voici les conditions préalables à la configuration de la multilocation sur Red
 
 
 
+[[prerequisites]]
 == Prérequis
 
 * Cluster NetApp ONTAP

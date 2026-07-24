@@ -23,6 +23,7 @@ NOTE: Trident Protect nécessite un registre pour héberger les images requises 
 
 
 
+[[creating-a-private-image-registry]]
 == Création d'un registre d'images privé
 
 . Supprimez l’annotation par défaut de la classe de stockage par défaut actuelle et annotez la classe de stockage basée sur Trident comme valeur par défaut pour le cluster OpenShift.
