@@ -20,11 +20,11 @@ Pour gérer différents clusters OpenShift, vous pouvez les créer ou les import
 +
 .. Créer une connexion fournisseur : accédez à Connexions fournisseur et cliquez sur Ajouter une connexion, fournissez tous les détails correspondant au type de fournisseur sélectionné et cliquez sur Ajouter.
 +
-image:redhat-openshift-075.png["Ajouter une connexion au fournisseur"]
+image::redhat-openshift-075.png[Ajouter une connexion au fournisseur]
 
 .. Pour créer un nouveau cluster, accédez à Clusters et cliquez sur Ajouter un cluster > Créer un cluster.  Fournissez les détails du cluster et du fournisseur correspondant et cliquez sur Créer.
 +
-image:redhat-openshift-076.png["Ajouter des clusters"]
+image::redhat-openshift-076.png[Ajouter des clusters]
 
 .. Une fois le cluster créé, il apparaît dans la liste des clusters avec le statut Prêt.
 
@@ -35,7 +35,7 @@ image:redhat-openshift-076.png["Ajouter des clusters"]
 .. Saisissez le nom du cluster et cliquez sur Enregistrer, Importer et Générer le code.  Une commande permettant d'ajouter le cluster existant s'affiche.
 .. Cliquez sur Copier la commande et exécutez la commande sur le cluster à ajouter au cluster hub.  Cela lance l'installation des agents nécessaires sur le cluster et, une fois ce processus terminé, le cluster apparaît dans la liste des clusters avec le statut Prêt.
 +
-image:redhat-openshift-077.png["Importer un cluster existant"]
+image::redhat-openshift-077.png[Importer un cluster existant]
 
 
 

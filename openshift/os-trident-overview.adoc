@@ -18,13 +18,13 @@ Trident est un orchestrateur de stockage open source et entièrement pris en cha
 
 Un administrateur peut configurer un certain nombre de backends de stockage en fonction des besoins du projet et des modèles de système de stockage qui permettent des fonctionnalités de stockage avancées, notamment la compression, des types de disques spécifiques ou des niveaux de qualité de service qui garantissent un certain niveau de performances.  Une fois définis, ces backends peuvent être utilisés par les développeurs dans leurs projets pour créer des revendications de volume persistant (PVC) et pour attacher un stockage persistant à leurs conteneurs à la demande.
 
-image:redhat-openshift-002.png["Figure montrant une boîte de dialogue d'entrée/sortie ou représentant un contenu écrit"]
+image::redhat-openshift-002.png[Figure montrant une boîte de dialogue d'entrée/sortie ou représentant un contenu écrit]
 
 Trident a un cycle de développement rapide et, tout comme Kubernetes, est publié quatre fois par an.
 
-Une matrice de support indiquant quelle version de Trident a été testée avec quelle distribution Kubernetes peut être trouvée https://docs.netapp.com/us-en/trident/trident-get-started/requirements.html#supported-frontends-orchestrators["ici"] .
+Une matrice de compatibilité indiquant quelle version de Trident a été testée avec quelle distribution Kubernetes est disponible dans link:https://docs.netapp.com/us-en/trident/trident-get-started/requirements.html#supported-frontends-orchestrators["Interfaces prises en charge (orchestrators)"^].
 
-Veuillez vous référer à lalink:https://docs.netapp.com/us-en/trident/index.html["Documentation du produit Trident"] pour les détails d'installation et de configuration.
+Veuillez vous référer au link:https://docs.netapp.com/us-en/trident/index.html["Documentation du produit Trident"^] pour obtenir des détails sur l'installation et la configuration.
 
 
 
@@ -33,7 +33,7 @@ Veuillez vous référer à lalink:https://docs.netapp.com/us-en/trident/index.ht
 
 Pour installer Trident sur le cluster utilisateur déployé et provisionner un volume persistant, procédez comme suit :
 
-. Téléchargez l'archive d'installation sur le poste de travail administrateur et extrayez le contenu.  La version actuelle de Trident peut être téléchargée https://github.com/NetApp/trident/releases?q=25.&expanded=true["ici"] .
+. Téléchargez l'archive d'installation sur le poste de travail de l'administrateur et extrayez son contenu. La version actuelle de Trident peut être téléchargée depuis le link:https://github.com/NetApp/trident/releases?q=25.&expanded=true["Page des versions de Trident sur GitHub"^].
 . Extrayez l’installation de Trident à partir du bundle téléchargé.
 +
 [listing]
@@ -327,8 +327,9 @@ Pour configurer les nœuds de travail afin d’exécuter les services iSCSI, pro
 +
 Lorsque vous n'utilisez pas le multipathing :
 
-+
-[source, cli]
+
+
+[listing]
 ----
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
@@ -347,10 +348,8 @@ spec:
           state: started
   osImageURL: ""
 ----
-+
-Lors de l'utilisation du multipathing :
++ Lors de l'utilisation du multipathing :
 
-+
 [source, cli]
 ----
 apiVersion: machineconfiguration.openshift.io/v1

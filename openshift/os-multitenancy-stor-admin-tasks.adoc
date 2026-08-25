@@ -20,12 +20,13 @@ Les ressources suivantes doivent être configurées par un administrateur de sto
 . Accédez à Stockage > Machines virtuelles de stockage et cliquez sur Ajouter.  Créez deux SVM, un pour le projet 1 et l’autre pour le projet 2, en fournissant les détails requis.  Créez également un compte vsadmin pour gérer le SVM et ses ressources.
 
 
-image:redhat-openshift-041.png["Création de SVM sur ONTAP"]
+image::redhat-openshift-041.png[Création de SVM sur ONTAP]
 
 . Connectez-vous au cluster Red Hat OpenShift en tant qu’administrateur de stockage.
 . Créez le backend pour le projet-1 et mappez-le au SVM dédié au projet.  NetApp recommande d'utiliser le compte vsadmin du SVM pour connecter le backend au SVM au lieu d'utiliser l'administrateur du cluster ONTAP .
-+
-[source, console]
+
+
+[listing]
 ----
 cat << EOF | tridentctl -n trident create backend -f
 {
@@ -41,8 +42,6 @@ cat << EOF | tridentctl -n trident create backend -f
 EOF
 ----
 
-
-
 NOTE: Nous utilisons le pilote ontap-nas pour cet exemple.  Utilisez le pilote approprié lors de la création du backend en fonction du cas d’utilisation.
 
 
@@ -50,8 +49,9 @@ NOTE: Nous supposons que Trident est installé dans le projet Trident.
 
 . De même, créez le backend Trident pour le projet-2 et mappez-le au SVM dédié au projet-2.
 . Ensuite, créez les classes de stockage.  Créez la classe de stockage pour le projet-1 et configurez-la pour utiliser les pools de stockage du backend dédié au projet-1 en définissant le paramètre storagePools.
-+
-[source, console]
+
+
+[listing]
 ----
 cat << EOF | oc create -f -
 apiVersion: storage.k8s.io/v1
@@ -66,8 +66,9 @@ EOF
 ----
 . De même, créez une classe de stockage pour le projet-2 et configurez-la pour utiliser les pools de stockage du backend dédié au projet-2.
 . Créez un ResourceQuota pour restreindre les ressources du projet 1 demandant du stockage à partir de classes de stockage dédiées à d'autres projets.
-+
-[source, console]
+
+
+[listing]
 ----
 cat << EOF | oc create -f -
 kind: ResourceQuota

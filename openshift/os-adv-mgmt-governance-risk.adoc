@@ -19,10 +19,10 @@ Cette fonctionnalité vous permet de définir les politiques de conformité pour
 . Accédez à Gouvernance et risques depuis la barre latérale.
 . Pour créer des politiques de conformité, cliquez sur Créer une politique, entrez les détails des normes de politique et sélectionnez les clusters qui doivent adhérer à cette politique.  Si vous souhaitez corriger automatiquement les violations de cette politique, cochez la case Appliquer si pris en charge et cliquez sur Créer.
 +
-image:redhat-openshift-080.png["Créer une politique de conformité"]
+image::redhat-openshift-080.png[Créer une politique de conformité]
 
 . Une fois toutes les politiques requises configurées, toutes les violations de politique ou de cluster peuvent être surveillées et corrigées à partir de Advanced Cluster Management.
 +
-image:redhat-openshift-081.png["Suivi des politiques"]
+image::redhat-openshift-081.png[Suivi des politiques]
 
 

@@ -16,9 +16,9 @@ summary: 'Le logiciel NetApp Element offre des performances modulaires et évolu
 [role="lead"]
 Le logiciel NetApp Element offre des performances modulaires et évolutives, chaque nœud de stockage offrant une capacité et un débit garantis à l'environnement.  Les systèmes NetApp Element peuvent évoluer de 4 à 100 nœuds dans un seul cluster et offrent un certain nombre de fonctionnalités avancées de gestion du stockage.
 
-image:redhat-openshift-064.png["Figure montrant une boîte de dialogue d'entrée/sortie ou représentant un contenu écrit"]
+image::redhat-openshift-064.png[Figure montrant une boîte de dialogue d'entrée/sortie ou représentant un contenu écrit]
 
-Pour plus d'informations sur les systèmes de stockage NetApp Element , visitez le https://www.netapp.com/data-storage/solidfire/["Site Web de NetApp Solidfire"^] .
+Pour plus d'informations sur les systèmes de stockage NetApp Element, visitez le link:https://www.netapp.com/data-storage/solidfire/["Site Web de NetApp Solidfire"^].
 
 
 

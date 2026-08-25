@@ -25,7 +25,7 @@ Ce document décrit comment utiliser NetApp ONTAP avec le service Red Hat OpenSh
 
 **un.  Créer un VolumeSnapshotClass Enregistrez le manifeste suivant dans un fichier appelé volume-snapshot-class.yaml
 
-[source]
+[source, yaml]
 ----
 apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshotClass
@@ -36,11 +36,11 @@ deletionPolicy: Delete
 ----
 Créez un instantané en utilisant le manifeste ci-dessus.
 
-image:redhat-openshift-container-rosa-020.png["classe d'instantanés"]
+image::redhat-openshift-container-rosa-020.png[classe d'instantanés]
 
 **b.  Ensuite, créez un instantané** Créez un instantané du PVC existant en créant VolumeSnapshot pour prendre une copie ponctuelle de vos données Postgresql.  Cela crée un instantané FSx qui ne prend presque pas de place dans le backend du système de fichiers.  Enregistrez le manifeste suivant dans un fichier appelé volume-snapshot.yaml :
 
-[source]
+[source, yaml]
 ----
 apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshot
@@ -55,13 +55,13 @@ spec:
 
 Supprimez la base de données pour simuler la perte de données (la perte de données peut survenir pour diverses raisons, ici nous la simulons simplement en supprimant la base de données)
 
-image:redhat-openshift-container-rosa-021.png["instantané du volume"]
+image::redhat-openshift-container-rosa-021.png[instantané du volume]
 
 **d.  Supprimez la base de données pour simuler la perte de données (la perte de données peut survenir pour diverses raisons, ici nous la simulons simplement en supprimant la base de données)**
 
-image:redhat-openshift-container-rosa-022.png["connexion à la base de données"]
+image::redhat-openshift-container-rosa-022.png[connexion à la base de données]
 
-image:redhat-openshift-container-rosa-023.png["supprimer la base de données"]
+image::redhat-openshift-container-rosa-023.png[supprimer la base de données]
 
 
 
@@ -74,7 +74,7 @@ image:redhat-openshift-container-rosa-023.png["supprimer la base de données"]
 
 Pour restaurer le volume à son état précédent, vous devez créer un nouveau PVC basé sur les données de l'instantané que vous avez pris.  Pour ce faire, enregistrez le manifeste suivant dans un fichier nommé pvc-clone.yaml
 
-[source]
+[source, yaml]
 ----
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -94,33 +94,33 @@ spec:
 ----
 Créez un clone du volume en créant un PVC en utilisant l'instantané comme source à l'aide du manifeste ci-dessus.  Appliquez le manifeste et assurez-vous que le clone est créé.
 
-image:redhat-openshift-container-rosa-024.png["clone postgresql à partir d'un instantané"]
+image::redhat-openshift-container-rosa-024.png[clone postgresql à partir d'un instantané]
 
 **b.  Supprimer l'installation postgresql d'origine**
 
-image:redhat-openshift-container-rosa-025.png["suppression de l'application postgresql"]
+image::redhat-openshift-container-rosa-025.png[suppression de l'application postgresql]
 
 **c.  Créer une nouvelle application postgresql en utilisant le nouveau clone PVC**
 
-[source]
+[source, bash]
 ----
 $ helm install postgresql bitnami/postgresql --set primary.persistence.enabled=true --set primary.persistence.existingClaim=postgresql-volume-clone -n postgresql
 ----
-image:redhat-openshift-container-rosa-026.png["nouvelle installation de postgresql"]
+image::redhat-openshift-container-rosa-026.png[nouvelle installation de postgresql]
 
 **d.  Vérifiez que le pod d'application est en cours d'exécution**
 
-image:redhat-openshift-container-rosa-027.png["nouvelle installation de postgresql"]
+image::redhat-openshift-container-rosa-027.png[nouvelle installation de postgresql]
 
 **e.  Vérifiez que le pod utilise le clone comme PVC**
 
-image:redhat-openshift-container-rosa-028.png["description de la nouvelle installation de postgresql"]
+image::redhat-openshift-container-rosa-028.png[description de la nouvelle installation de postgresql]
 
-image:redhat-openshift-container-rosa-029.png["le nouveau pvc est le clone"]
+image::redhat-openshift-container-rosa-029.png[le nouveau pvc est le clone]
 
 f) Pour valider que la base de données a été restaurée comme prévu, revenez à la console du conteneur et affichez les bases de données existantes
 
-image:redhat-openshift-container-rosa-030.png["base de données restaurée"]
+image::redhat-openshift-container-rosa-030.png[base de données restaurée]
 
 
 

@@ -46,9 +46,9 @@ Pour la configuration du nœud de provisionnement, le client crée des interface
 
 Les images suivantes illustrent l’environnement pendant le déploiement de l’IPI et une fois le déploiement terminé.
 
-image:redhat-openshift-036.png["Figure montrant une boîte de dialogue d'entrée/sortie ou représentant un contenu écrit"]
+image::redhat-openshift-036.png[Figure montrant une boîte de dialogue d'entrée/sortie ou représentant un contenu écrit]
 
-image:redhat-openshift-037.png["Figure montrant une boîte de dialogue d'entrée/sortie ou représentant un contenu écrit"]
+image::redhat-openshift-037.png[Figure montrant une boîte de dialogue d'entrée/sortie ou représentant un contenu écrit]
 
 
 

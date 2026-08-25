@@ -29,7 +29,7 @@ Pour plus d'informations sur OSP, consultez lelink:https://www.redhat.com/en/tec
 
 Les services de la plateforme OpenStack sont déployés sous forme de conteneurs, ce qui isole les services les uns des autres et permet des mises à niveau faciles.  La plateforme OpenStack utilise un ensemble de conteneurs construits et gérés avec Kolla.  Le déploiement des services est effectué en extrayant des images de conteneurs du portail personnalisé Red Hat.  Ces conteneurs de services sont gérés à l’aide de la commande Podman et sont déployés, configurés et maintenus avec Red Hat OpenStack Director.
 
-image:redhat-openshift-034.png["Figure montrant une boîte de dialogue d'entrée/sortie ou représentant un contenu écrit"]
+image::redhat-openshift-034.png[Figure montrant une boîte de dialogue d'entrée/sortie ou représentant un contenu écrit]
 
 [cols="15%, 15%, 70%"]
 |===

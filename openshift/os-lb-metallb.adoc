@@ -25,8 +25,8 @@ MetalLB est un équilibreur de charge réseau auto-hébergé installé sur votre
 
 En fonction de la manière dont MetalLB annonce l'adresse IP attribuée aux services LoadBalancer en dehors du cluster OpenShift, il fonctionne selon deux modes :
 
-* *Mode couche 2.*  Dans ce mode, un nœud du cluster OpenShift prend possession du service et répond aux requêtes ARP pour cette IP afin de la rendre accessible en dehors du cluster OpenShift.  Étant donné que seul le nœud annonce l'adresse IP, il présente un goulot d'étranglement de bande passante et des limitations de basculement lent.  Pour plus d'informations, consultez la documentationlink:https://metallb.universe.tf/concepts/layer2/["ici"] .
-* *Mode BGP.*  Dans ce mode, tous les nœuds du cluster OpenShift établissent des sessions de peering BGP avec un routeur et annoncent les itinéraires pour transférer le trafic vers les adresses IP de service.  La condition préalable est d’intégrer MetalLB à un routeur de ce réseau.  En raison du mécanisme de hachage dans BGP, il présente certaines limitations lorsque le mappage IP vers nœud pour un service change.  Pour plus d'informations, reportez-vous à la documentationlink:https://metallb.universe.tf/concepts/bgp/["ici"] .
+* *Mode couche 2.* Dans ce mode, un nœud du OpenShift cluster prend en charge le service et répond aux requêtes ARP pour cette adresse IP afin de la rendre accessible depuis l'extérieur du OpenShift cluster. Étant donné que seul ce nœud annonce l'adresse IP, il présente un goulot d'étranglement en termes de bande passante et des limitations de basculement lentes. Pour plus d'informations, consultez link:https://metallb.universe.tf/concepts/layer2/["Documentation du mode couche 2 de MetalLB"^].
+* *Mode BGP.* Dans ce mode, tous les nœuds du cluster OpenShift établissent des sessions de peering BGP avec un routeur et annoncent les routes pour acheminer le trafic vers les adresses IP des services. La condition préalable est d’intégrer MetalLB avec un routeur dans ce réseau. En raison du mécanisme de hachage dans BGP, il présente certaines limitations lorsque la correspondance IP-vers-nœud pour un service change. Pour plus d’informations, consultez link:https://metallb.universe.tf/concepts/bgp/["Documentation du mode BGP de MetalLB"^].
 
 
 
@@ -116,6 +116,6 @@ configmap/config created
 . Désormais, lorsque les services d'équilibrage de charge sont créés, MetalLB attribue une adresse IP externe aux services et annonce l'adresse IP en répondant aux requêtes ARP.
 +
 
-NOTE: Si vous souhaitez configurer MetalLB en mode BGP, ignorez l'étape 6 ci-dessus et suivez la procédure décrite dans la documentation MetalLBlink:https://metallb.universe.tf/concepts/bgp/["ici"] .
+NOTE: Si vous souhaitez configurer MetalLB en mode BGP, ignorez l’étape 6 ci-dessus et suivez la procédure dans link:https://metallb.universe.tf/concepts/bgp/["Documentation du mode BGP de MetalLB"^].
 
 

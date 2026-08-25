@@ -25,3 +25,10 @@ indexpage:
       url: openshift-videos.html#automation-and-integration
     - title: Intégrations cloud et hybrides
       url: openshift-videos.html#cloud-and-hybrid-integrations
+  - title: vSphere Kubernetes Service avec stockage NetApp
+    links:
+    - title: Déploiement du service Kubernetes vSphere avec le stockage NetApp
+      url: vks-videos.html#deploying-a-vsphere-kubernetes-service-cluster-with-netapp-storage
+    - title: Déploiement de charges de travail vSphere Kubernetes Service avec le
+        stockage NetApp
+      url: vks-videos.html#deploying-workloads-with-ontap-persistent-storage-using-trident

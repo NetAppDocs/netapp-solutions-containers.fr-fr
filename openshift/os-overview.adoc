@@ -34,7 +34,7 @@ La plateforme de conteneurs Red Hat OpenShift réunit les opérations de dévelo
 * *Catalogue de sécurité et de conteneurs* OpenShift offre une multilocation et protège l'utilisateur contre l'exécution de code nuisible en utilisant une sécurité établie avec Security-Enhanced Linux (SELinux), CGroups et Secure Computing Mode (seccomp) pour isoler et protéger les conteneurs.  Il fournit également un cryptage via des certificats TLS pour les différents sous-systèmes et un accès aux conteneurs certifiés Red Hat (access.redhat.com/containers) qui sont analysés et classés avec un accent particulier sur la sécurité pour fournir des conteneurs d'applications certifiés, fiables et sécurisés aux utilisateurs finaux.
 
 
-image:redhat-openshift-004.png["Figure montrant une boîte de dialogue d'entrée/sortie ou représentant un contenu écrit"]
+image::redhat-openshift-004.png[Figure montrant une boîte de dialogue d'entrée/sortie ou représentant un contenu écrit]
 
 
 
@@ -55,13 +55,13 @@ Le déploiement de l'infrastructure provisionnée par l'installateur (IPI) d'Ope
 . Visitez Red Hat OpenShiftlink:https://www.openshift.com["site web"^] et connectez-vous avec vos identifiants SSO.
 . Sélectionnez l’environnement dans lequel vous souhaitez déployer Red Hat OpenShift.
 +
-image:redhat-openshift-008.png["Figure montrant une boîte de dialogue d'entrée/sortie ou représentant un contenu écrit"]
+image::redhat-openshift-008.png[Figure montrant une boîte de dialogue d'entrée/sortie ou représentant un contenu écrit]
 
 . Sur l'écran suivant, téléchargez le programme d'installation, le secret d'extraction unique et les outils CLI pour la gestion.
 +
-image:redhat-openshift-009.png["Figure montrant une boîte de dialogue d'entrée/sortie ou représentant un contenu écrit"]
+image::redhat-openshift-009.png[Figure montrant une boîte de dialogue d'entrée/sortie ou représentant un contenu écrit]
 
-. Suivez lelink:https://docs.openshift.com/container-platform/4.7/installing/index.html["instructions d'installation"] fourni par Red Hat pour être déployé dans l'environnement de votre choix.
+. Suivez les instructions link:https://docs.openshift.com/container-platform/4.7/installing/index.html["instructions d'installation"^] fournies par Red Hat pour déployer dans l’environnement de votre choix.
 
 
 

@@ -58,7 +58,7 @@ NetApp fournit des plates-formes de stockage robustes entièrement flash (AFF) e
 
 Les deux systèmes sont alimentés par le logiciel de gestion de données NetApp ONTAP , le logiciel de gestion de données le plus avancé du secteur pour une gestion du stockage simplifiée, intégrée au cloud et hautement disponible afin de fournir la vitesse, l'efficacité et la sécurité de niveau entreprise dont votre infrastructure de données a besoin.
 
-Pour plus d'informations sur les plateformes NETAPP AFF et FAS , cliquez sur https://docs.netapp.com/platstor/index.jsp["ici"] .
+Pour plus d'informations sur les plateformes NetApp AFF et FAS, consultez le link:https://docs.netapp.com/platstor/index.jsp["NetApp documentation de la plateforme matérielle"^].
 
 
 
@@ -67,7 +67,7 @@ Pour plus d'informations sur les plateformes NETAPP AFF et FAS , cliquez sur htt
 
 ONTAP Select est un déploiement défini par logiciel de NetApp ONTAP qui peut être déployé sur un hyperviseur dans votre environnement.  Il peut être installé sur VMware vSphere ou sur KVM et offre toutes les fonctionnalités et l'expérience d'un système ONTAP basé sur le matériel.
 
-Pour plus d'informations sur ONTAP Select, cliquez sur https://docs.netapp.com/us-en/ontap-select/["ici"] .
+Pour plus d'informations sur ONTAP Select, consultez le link:https://docs.netapp.com/us-en/ontap-select/["Documentation ONTAP Select"^].
 
 
 
@@ -76,4 +76,4 @@ Pour plus d'informations sur ONTAP Select, cliquez sur https://docs.netapp.com/u
 
 NetApp Cloud Volumes ONTAP est une version déployée dans le cloud de NetApp ONTAP disponible pour être déployée dans un certain nombre de clouds publics, notamment : Amazon AWS, Microsoft Azure et Google Cloud.
 
-Pour plus d'informations sur Cloud Volumes ONTAP, cliquez sur https://docs.netapp.com/us-en/occm/#discover-whats-new["ici"] .
+Pour plus d'informations sur Cloud Volumes ONTAP, consultez le link:https://docs.netapp.com/us-en/occm/#discover-whats-new["Documentation Cloud Volumes ONTAP"^].
