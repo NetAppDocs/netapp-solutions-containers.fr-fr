@@ -210,7 +210,9 @@ image::vks-005.png[Connexion CLI au cluster VKS à l'aide de kubeconfig]
 [[video-demonstration]]
 == Démonstration vidéo
 
-La vidéo suivante montre comment créer un cluster Kubernetes vSphere.
+Les vidéos suivantes présentent deux façons de créer un cluster Kubernetes vSphere.
 
-.Créer un cluster Kubernetes vSphere sur le cluster superviseur
+.Créer un cluster Kubernetes vSphere sur un cluster superviseur
 video::4ef64b3c-7a68-41d5-bacf-b4a8012b49f8[panopto,width=360]
+.Créer un cluster Kubernetes vSphere avec VCF Automation
+video::571ced1a-58e8-4bf4-9c24-b4b10118bc22[panopto,width=360]
