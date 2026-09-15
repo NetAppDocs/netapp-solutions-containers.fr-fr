@@ -14,11 +14,23 @@ summary: 'Sauvegardez et restaurez des applications conteneurisées dans un clus
 
 
 [role="lead"]
-Sauvegardez et restaurez des applications conteneurisées dans un cluster vSphere Kubernetes Service (VKS) à l'aide de la NetApp Console. Cette procédure couvre la création et la gestion des opérations de sauvegarde et de restauration via le service Backup and Recovery Service via la NetApp Console, en utilisant le stockage d’objets ONTAP S3 comme cible de sauvegarde.
+Sauvegardez et restaurez des applications conteneurisées dans un cluster vSphere Kubernetes Service (VKS) à l'aide de la NetApp Console. Cette procédure couvre la création et la gestion des opérations de sauvegarde et de restauration via le service NetApp Backup and Recovery dans la NetApp Console.
 
-NetApp Console permet la gestion centralisée du stockage et des services de données dans les environnements sur site et cloud. Elle offre un contrôle unifié, une simplicité opérationnelle et une gestion sécurisée. Plusieurs services de données et fonctionnalités de gestion sont accessibles depuis l’interface utilisateur à link:https://console.netapp.com["console.netapp.com"^]. Pour des informations complètes sur NetApp Console, consultez link:https://docs.netapp.com/us-en/console-family/["Documentation NetApp Console"].
+Les exemples couvrent les deux scénarios de sauvegarde et de restauration suivants :
 
-Cette section est consacrée au service de données NetApp Backup and Recovery pour les charges de travail Kubernetes, en particulier les applications conteneurisées sur les clusters vSphere Kubernetes Service. Le service NetApp Backup and Recovery vous permet de découvrir, gérer, créer et associer des politiques de protection à vos applications Kubernetes à l’aide d’une interface unique. Pour un guide complet, consultez link:https://docs.netapp.com/us-en/data-services-backup-recovery/br-use-kubernetes-protect-overview.html["Documentation NetApp Backup and Recovery"].
+. Sauvegarde et restauration à l'aide du stockage d'objets ONTAP S3 comme cible de sauvegarde (workflow disque-vers-objet).
+. Sauvegarde et restauration en utilisant ONTAP comme cible de sauvegarde (workflow disque à disque).
+
+
+
+NOTE: La sauvegarde et la restauration utilisant une politique de distribution 3-2-1 (flux de travail disque à disque et disque à objet) ne sont actuellement pas prises en charge pour les charges de travail VKS.
+
+NetApp Console permet la gestion centralisée du stockage et des services de données dans les environnements sur site et cloud. Elle offre un contrôle unifié, une simplicité d’utilisation et une gestion sécurisée. Plusieurs services de données et fonctionnalités de gestion sont accessibles depuis l’interface utilisateur à link:https://console.netapp.com["console.netapp.com"^]. Pour des informations complètes sur NetApp Console, consultez link:https://docs.netapp.com/us-en/console-family/["Documentation NetApp Console"].
+
+Cette section est consacrée au service de données NetApp Backup and Recovery pour les charges de travail Kubernetes, en particulier les applications conteneurisées sur les clusters vSphere Kubernetes Service. Le service NetApp Backup and Recovery vous permet de découvrir, gérer, créer et associer des politiques de protection à vos applications Kubernetes à l'aide d'une interface unique. Pour un guide complet, consultez link:https://docs.netapp.com/us-en/data-services-backup-recovery/br-use-kubernetes-protect-overview.html["Documentation NetApp Backup and Recovery"].
+
+
+NOTE: Cette procédure suppose que vous avez déjà déployé un agent Console dans l'environnement où s'exécute votre cluster VKS. Assurez-vous que l'agent est correctement enregistré et visible dans NetApp Console avant de procéder aux opérations de sauvegarde et de restauration.
 
 
 
@@ -33,7 +45,7 @@ Assurez-vous qu'un agent Console est déployé dans l'environnement où votre cl
 .Afficher un exemple
 [%collapsible]
 ====
-Dans NetApp Console, cliquez sur Déployer l'agent comme indiqué dans la capture d'écran, puis déployez l'agent dans l'environnement où le cluster VKS est en cours d'exécution.
+Dans la NetApp Console, cliquez sur *Déployer l'agent* comme indiqué dans la capture d'écran, puis déployez l'agent dans l'environnement où le cluster VKS est en cours d'exécution.
 
 Dans cet exemple, sélectionnez *Sur site > Avec OVA*, copiez l'URL OVA et utilisez cette URL dans vCenter pour déployer l'agent Console.
 
@@ -53,12 +65,14 @@ Le cluster ONTAP principal doit être ajouté à la NetApp Console et le service
 .Afficher un exemple
 [%collapsible]
 ====
-Cette étape nécessite que le cluster Kubernetes vSphere soit en cours d'exécution et que l'agent Console soit déployé dans le même environnement. Suivez ces étapes pour découvrir le cluster Kubernetes vSphere dans la NetApp Console.
+Cette étape nécessite que le cluster Kubernetes vSphere soit en cours d'exécution et que l'agent Console soit déployé dans le même environnement.
+
+Suivez ces étapes pour découvrir le cluster Kubernetes vSphere dans la NetApp Console.
 
 .. Dans la NetApp Console, sélectionnez *Inventory > Kubernetes* et fournissez les détails du cluster Kubernetes vSphere.
 .. Sélectionnez l’agent déployé dans le même environnement où se trouve le cluster Kubernetes vSphere.
 .. Copiez les commandes fournies pour installer Trident Protect et exécutez-les depuis une machine connectée à votre cluster Kubernetes vSphere.
-.. Une fois Trident Protect installé avec succès, cliquez sur *Découvrir*. NetApp Console détecte le cluster Kubernetes vSphere et toutes ses ressources via l’agent, puis les affiche dans l’interface utilisateur.
+.. Une fois Trident Protect installé avec succès, cliquez sur *Découvrir*. NetApp Console détecte le cluster Kubernetes vSphere et toutes ses ressources via l’agent et les affiche dans l’interface utilisateur.
 
 
 image::vks-console-br-007.png[Découvrez le cluster Kubernetes vSphere]
@@ -72,13 +86,13 @@ image::vks-console-br-010.png[Cluster Kubernetes vSphere détecté dans la NetAp
 ====
 . *Configurer ONTAP S3 comme cible de sauvegarde*
 +
-Dans cet exemple, nous utilisons le stockage d'objets ONTAP S3 comme cible de sauvegarde. Vous pouvez également utiliser AWS S3, Azure Blob, Google Cloud Storage ou StorageGRID comme cibles de sauvegarde.
+Dans cet exemple, le stockage d'objets ONTAP S3 est utilisé comme cible de sauvegarde. Vous pouvez également utiliser AWS S3, Azure Blob, Google Cloud Storage ou StorageGRID comme cibles de sauvegarde.
 
 +
 Pour plus de détails, consultez link:https://docs.netapp.com/us-en/data-services-backup-recovery/br-start-setup.html#prepare-the-backup-destination["Documentation NetApp Console"].
 
 +
-Pour ajouter ONTAP S3 comme cible de sauvegarde dans NetApp Console, vous aurez besoin des informations suivantes provenant de votre cluster ONTAP.
+Pour ajouter ONTAP S3 comme cible de sauvegarde dans NetApp Console, vous avez besoin des informations suivantes concernant votre cluster ONTAP.
 
 +
 [listing]
@@ -129,12 +143,10 @@ image::vks-console-br-006.png[Détails du stockage d'objets ONTAP S3 pour la dé
 NOTE: Pour créer et protéger une application Kubernetes, vous devez disposer du rôle de super administrateur Backup and Recovery ou d'administrateur de sauvegarde Backup and Recovery. Pour restaurer une application Kubernetes, vous devez disposer du rôle de super administrateur Backup and Recovery ou d'administrateur de restauration Backup and Recovery.
 
 +
-.Afficher un exemple
+.Afficher un exemple : Créer une application pour les charges de travail conteneur
 [%collapsible]
 ====
 Dans cette étape, créez une application dans la NetApp Console pour les applications conteneurisées de votre cluster Kubernetes vSphere qui doivent être protégées. Vous pouvez utiliser des espaces de noms pour créer une application afin de protéger toutes les applications conteneurisées dans un espace de noms du cluster Kubernetes vSphere.
-
-Vous aurez également besoin d'une stratégie de protection à associer à l'application. Vous pouvez créer une nouvelle stratégie de protection ou en utiliser une existante.
 
 image::vks-console-br-011.png[Créer une application pour les applications conteneurisées]
 
@@ -146,7 +158,14 @@ Ensuite, vous devez définir les paramètres de protection de l'application. Vou
 
 image::vks-console-br-013.png[Créer une nouvelle politique de protection]
 
-Attribuez un nom à la stratégie et choisissez l'architecture de sauvegarde. Dans cet exemple, la sauvegarde de disque vers stockage objet est sélectionnée. Définissez la planification des instantanés locaux, qui contrôle la fréquence à laquelle les instantanés sont pris sur le stockage principal. Configurez ensuite séparément les paramètres de sauvegarde du stockage objet : choisissez la cible de sauvegarde (dans cet exemple, ONTAP S3), définissez la planification des transferts qui contrôle le moment où les données d'instantané sont copiées vers le stockage objet, et spécifiez le nombre de copies de rétention. La planification des transferts est indépendante de la planification des instantanés, ainsi les ressources sont copiées vers le stockage objet selon la planification des transferts, et non immédiatement après la prise de chaque instantané. Vous pouvez également modifier le nombre maximal de tentatives et l'intervalle entre les tentatives si nécessaire. Cliquez sur *Créer* pour continuer. L'application sera découverte et la stratégie de protection lui sera associée.
+====
++
+.Afficher un exemple : créer une stratégie de protection à l’aide de l’architecture de stockage sur disque vers objet
+[%collapsible]
+====
+Attribuez un nom à la stratégie et choisissez l'architecture de sauvegarde. Dans cet exemple, Disque vers stockage objet est choisi. Définissez la planification des instantanés locaux, qui contrôle la fréquence à laquelle les instantanés sont pris sur le stockage principal. Choisissez ensuite la cible de stockage objet pour les métadonnées de l'application Kubernetes utilisées pour les instantanés.
+
+Ensuite, configurez séparément les paramètres de sauvegarde du stockage objet : choisissez la cible de sauvegarde (dans cet exemple, ONTAP S3), définissez la planification des transferts qui détermine quand les données des instantanés sont copiées vers le stockage objet, et spécifiez le nombre de copies de rétention. La planification des transferts est indépendante de la planification des instantanés, ainsi les ressources sont copiées vers le stockage objet selon la planification des transferts, et non immédiatement lors de la création de chaque instantané. Vous pouvez également modifier le nombre maximal de tentatives et l’intervalle entre les tentatives si nécessaire. Cliquez sur *Create* pour continuer. L’application sera découverte et la stratégie de protection lui sera associée.
 
 image::vks-console-br-014.png[Fournissez le nom de la politique de protection]
 
@@ -159,21 +178,40 @@ image::vks-console-br-017.png[Paramètres de stockage d'objets pour la sauvegard
 image::vks-console-br-018.png[Application créée et protection terminée]
 
 ====
++
+.Afficher un exemple : créer une politique de protection à l’aide de l’architecture Disque à disque
+[%collapsible]
+====
+
+NOTE: Pour choisir l'architecture Disque à Disque, assurez-vous d'avoir configuré la cible de stockage secondaire avec le peering de cluster et le peering SVM et de disposer des informations d'identification et des autorisations nécessaires.
+
+Attribuez un nom à la stratégie et choisissez l'architecture de sauvegarde. Dans cet exemple, Disque à Disque est choisi. Définissez la planification des instantanés locaux, qui contrôle la fréquence à laquelle les instantanés sont pris sur le stockage principal. Sélectionnez ensuite l'emplacement de stockage objet pour les métadonnées de l'application Kubernetes pour les instantanés.
+
+Configurez séparément les paramètres de sauvegarde du stockage secondaire : choisissez la cible de sauvegarde, le cluster ONTAP et la SVM configurés pour la sauvegarde, ainsi que l’agrégat où le volume de sauvegarde sera créé, à partir de la liste déroulante. Définissez la planification des transferts qui détermine quand les données des instantanés sont copiées vers le stockage secondaire et spécifiez le nombre de copies de rétention. La planification des transferts est indépendante de la planification des instantanés, ainsi les ressources sont copiées vers la cible secondaire selon la planification des transferts, et non immédiatement lors de la création de chaque instantané. Configurez également la cible de stockage d’objets où sont stockées les métadonnées applicatives des copies SnapMirror.
+
+Vous pouvez également modifier le nombre maximal de tentatives et l’intervalle entre les tentatives si nécessaire. Cliquez sur *Créer* pour continuer. L’application sera détectée et la politique de protection lui sera associée.
+
+image::vks-console-br-027.png[Indiquez le nom de la politique de protection et sélectionnez l’architecture de sauvegarde]
+
+image::vks-console-br-028.png[Paramètres de snapshot local]
+
+image::vks-console-br-029.png[Paramètres de stockage secondaire pour la sauvegarde de disque à disque]
+
+====
 . *Restaurez l'application à partir d'une sauvegarde*
 +
 
 NOTE: Vous avez besoin du rôle de super administrateur NetApp Backup and Recovery ou du rôle d'administrateur de restauration NetApp Backup and Recovery pour restaurer une application Kubernetes.
 
 +
-.Afficher un exemple
-[%collapsible]
-====
-** Vous pouvez choisir n'importe quel point de restauration disponible — un instantané local, une sauvegarde de stockage d'objets ou une sauvegarde provenant d'une cible secondaire — pour restaurer l'application.
+** Vous pouvez choisir n'importe quel point de restauration disponible—un instantané local, une sauvegarde de stockage d'objets ou une sauvegarde provenant d'une cible secondaire—pour restaurer l'application.
 ** Vous pouvez restaurer l'application dans son espace de noms d'origine ou dans un espace de noms différent.
 ** Vous pouvez sélectionner les ressources à inclure dans la restauration.
 ** Vous pouvez choisir la classe de stockage à utiliser pour les ressources d'application restaurées.
-
-
++
+.Afficher un exemple : restauration à partir du stockage d’objets vers un autre espace de noms
+[%collapsible]
+====
 image::vks-console-br-019.png[Restaurer l'application à partir d'une sauvegarde]
 
 image::vks-console-br-020.png[Choisissez un point de restauration]
@@ -184,13 +222,50 @@ image::vks-console-br-022.png[Sélectionnez tout ou partie des ressources à res
 
 image::vks-console-br-023.png[Sélectionnez la classe de stockage pour les ressources restaurées]
 
+====
++
+.Afficher un exemple : restauration à partir du stockage sur disque vers le même espace de noms
+[%collapsible]
+====
+image::vks-console-br-030.png[Choisissez un point de restauration]
+
+image::vks-console-br-031.png[Choisissez la sauvegarde de disque secondaire ainsi que la cible du cluster et de l'espace de noms]
+
+image::vks-console-br-032.png[Sélectionnez tout ou partie des ressources à restaurer]
+
+image::vks-console-br-033.png[Sélectionnez la classe de stockage pour les ressources restaurées]
+
+====
++
 Vous pouvez suivre la progression du travail de restauration dans la section Surveillance de la NetApp Console. Après l’achèvement du travail de restauration, vous pouvez voir les ressources restaurées dans le cluster Kubernetes vSphere.
 
++
+.Afficher l'exemple : Application restaurée dans le même espace de noms ou dans un espace de noms différent
+[%collapsible]
+====
 image::vks-console-br-024.png[Surveillez l'avancement des travaux de restauration]
 
 image::vks-console-br-025.png[Tâche de restauration terminée]
 
-image::vks-console-br-026.png[Application restaurée]
+image::vks-console-br-026.png[Application restaurée dans un espace de noms différent]
+
+image::vks-console-br-034.png[Application restaurée dans le même espace de noms]
 
 ====
 
+
+
+
+
+
+[[video-demonstration]]
+== Démonstration vidéo
+
+La vidéo suivante montre comment sauvegarder les charges de travail d'un cluster VKS sur le stockage d'objets ONTAP S3 à l'aide de NetApp Console et les restaurer sur le cluster Kubernetes vSphere.
+
+.Sauvegardez les charges de travail d'un cluster VKS vers Object Store et restaurez-les à l'aide de la NetApp Console
+video::02f61f3c-ae52-4f0b-9fe7-b4c0012ac7d8[panopto,width=360]
+La vidéo suivante présente un aperçu des fonctionnalités NetApp Console Local.
+
+.NetApp Console Vue d'ensemble locale
+video::5a0bdd54-7d38-494a-a224-b4b60011547f[panopto,width=360]

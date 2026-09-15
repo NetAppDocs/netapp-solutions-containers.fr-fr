@@ -172,7 +172,7 @@ image::vks-tp-001.png[ONTAP S3 AppVault créé]
 .Créer une application Trident Protect
 [%collapsible]
 ====
-Cet exemple traite de la protection des données pour l'application postgres d'exemple, qui est installée dans l'espace de noms postgres. Pour plus de détails sur l'installation, voir link:/vsphere-kubernetes-service/deploy-vks-workloads.html["Déployez des charges de travail VKS à l'aide du stockage NetApp"].
+Cet exemple traite de la protection des données pour l'application PostgreSQL d'exemple, qui est installée dans l' `postgres`espace de noms. Pour plus de détails sur l'installation, voir link:deploy-vks-workloads.html["Déployez des charges de travail VKS à l'aide du stockage NetApp"].
 
 
 NOTE: Les exemples de PVC PostgreSQL requièrent le mode d'accès RWO. Le mode d'accès doit être explicitement spécifié dans le manifeste du PVC ; Trident ne sélectionne pas automatiquement un mode d'accès en fonction du protocole de stockage. RWX est pris en charge pour les PVC reposant sur NAS, et les PVC reposant sur SAN peuvent prendre en charge RWX moyennant une configuration supplémentaire. Pour plus d'informations, consultez la link:https://docs.netapp.com/us-en/trident/trident-protect/learn-about-trident-protect.html["Documentation Trident Protect"].
