@@ -18,18 +18,14 @@ indexpage:
       url: "/blogs.html"
     - title: Vidéos et démos
       url: "/videos/index.html"
-  - title: Anthos avec NetApp
+  - title: vSphere Kubernetes Service avec NetApp
     links:
     - title: Présentation de la solution
-      url: "/anthos/anthos-solution-overview.html"
-    - title: Clusters Anthos sur VMware
-      url: "/anthos/anthos-vmw.html"
-    - title: Anthos sur métal nu
-      url: "/anthos/anthos-bm.html"
+      url: "/vsphere-kubernetes-service/vks-overview.html"
     - title: Intégrations de stockage NetApp
-      url: "/anthos/anthos-storint-overview.html"
-    - title: Cas d'utilisation
-      url: "/anthos/anthos-deploy-app-cloud-console.html"
+      url: "/vsphere-kubernetes-service/netapp-storage-vks.html"
+    - title: Protection des données
+      url: "/vsphere-kubernetes-service/backup-restore-console.html"
   - title: Red Hat OpenShift avec NetApp
     links:
     - title: Présentation de la solution
@@ -42,12 +38,26 @@ indexpage:
       url: "/openshift/os-storint-overview.html"
     - title: Cas d'utilisation
       url: "/openshift/os-use-cases.html"
+  - title: Anthos avec NetApp
+    links:
+    - title: Présentation de la solution
+      url: "/anthos/anthos-solution-overview.html"
+    - title: Clusters Anthos sur VMware
+      url: "/anthos/anthos-vmw.html"
+    - title: Anthos sur métal nu
+      url: "/anthos/anthos-bm.html"
+    - title: Intégrations de stockage NetApp
+      url: "/anthos/anthos-storint-overview.html"
+    - title: Cas d'utilisation
+      url: "/anthos/anthos-deploy-app-cloud-console.html"
   - title: Solutions partenaires
     links:
-    - title: Site Web d'Anthos
-      url: https://cloud.google.com/anthos
+    - title: vSphere Kubernetes Service site web
+      url: https://www.vmware.com/products/cloud-infrastructure/vsphere-kubernetes-service
     - title: Site Web Red Hat OpenShift
       url: https://www.redhat.com/en/technologies/cloud-computing/openshift
+    - title: Site Web d'Anthos
+      url: https://cloud.google.com/anthos
   - title: Demandes de solutions et commentaires
     links:
     - title: Automatisation des demandes
