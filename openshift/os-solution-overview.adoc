@@ -94,6 +94,8 @@ Cette section est dédiée aux personnalisations que les utilisateurs réels dev
 [[current-support-matrix-for-validated-releases]]
 == Matrice de support actuelle pour les versions validées
 
+Les versions listées dans ce tableau sont celles par rapport auxquelles la solution a été validée au moment de la publication de cette documentation.
+
 |===
 
 
@@ -114,3 +116,4 @@ Cette section est dédiée aux personnalisations que les utilisateurs réels dev
 
 | VMware vSphere | Virtualisation du centre de données | 7.0, 8.0.2 
 |===
+Des fonctionnalités supplémentaires sont testées en continu avec les dernières versions d'ONTAP, NetApp Trident et de Red Hat OpenShift prises en charge par Trident. Pour connaître la dernière version de OpenShift prise en charge par Trident, consultez le link:https://docs.netapp.com/us-en/trident/trident-get-started/requirements.html#supported-frontends-orchestrators["Documentation Trident"^].
